@@ -118,7 +118,7 @@ namespace Estimate
             return docID;
         }
 
-        private static void DeleteDoc(string docID)
+        public static void DeleteDoc(string docID)
         {
             using (var conn = new SQLiteConnection(ConnectionString))
             {

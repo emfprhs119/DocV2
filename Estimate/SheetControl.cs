@@ -30,6 +30,8 @@ namespace Estimate
         readonly Color sumColor = System.Drawing.Color.LightYellow;
         Label totalLabel;
         HashSet<CellConfig> restoreSet;
+        public bool isModified;
+        DocForm docForm;
         public float[] GetColumnWidths()
         {
             return columnWidths;
@@ -66,13 +68,15 @@ namespace Estimate
             totalLabel.Text = TotalString() + "원";
         }
 
-        public SheetControl(unvell.ReoGrid.ReoGridControl reoGrid, Label label23, Graphics g)
+        public SheetControl(DocForm docForm, unvell.ReoGrid.ReoGridControl reoGrid, Label label23, Graphics g)
         {
+            this.docForm = docForm;
             this.reoGrid = reoGrid;
             totalLabel = label23;
             this.g = g;
+            isModified = true;
 
-            
+
         }
         private void FormulaUpdate(RangePosition rangePosition)
         {
@@ -172,10 +176,10 @@ namespace Estimate
             restoreSet = new HashSet<CellConfig>();
             var columnSize = columnElements.GetArrayLength();
             sheet.Columns = columnSize;
-
             columnWidths = new float[sheet.Columns];
             sheet.Rows = initMaxRow + 1;
             sheet.HideRows(initMaxRow, 1);
+            
             sheet.RowHeaderWidth = 35;
 
             Dictionary<string, int> headerFindIndex = new Dictionary<string, int>();
@@ -294,6 +298,8 @@ namespace Estimate
             }
             
             ResetSheetWidth(null);
+
+            isModified = false;
         }
 
         internal void FormResize(float scale)
@@ -444,6 +450,11 @@ namespace Estimate
 
         private void Sheet_RangeDataChanged(object sender, RangeEventArgs e)
         {
+            if (!isModified)
+            {
+                docForm.Text = docForm.Text + " *";
+                isModified = true;
+            }
             for (int i = e.Range.Col; i <= e.Range.EndCol; i++)
             {
                 for (int j = e.Range.Row; j <= e.Range.EndRow; j++)
@@ -456,14 +467,17 @@ namespace Estimate
 
         private void Sheet_CellDataChanged(object sender, CellEventArgs e)
         {
+            if (!isModified)
+            {
+                docForm.Text = "*"+docForm.Text;
+                isModified = true;
+            }
             if (e.Cell.Data != null && e.Cell.DisplayText == "" && !e.Cell.IsReadOnly)
                 e.Cell.Data = null;
             if (e.Cell.Data != null && e.Cell.Data.ToString().Contains(",") && e.Cell.DataFormat == unvell.ReoGrid.DataFormat.CellDataFormatFlag.Currency)
                 e.Cell.Data = e.Cell.Data.ToString().Replace(",", "");
             
             ReshapeFontSize(e.Cell);
-
-            totalLabel.Text = string.Format("{0:c}", TotalString()) + "원";
         }
 
         public string[][] ExtractItemArray()

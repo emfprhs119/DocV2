@@ -600,6 +600,7 @@
             this.Controls.Add(this.panel1);
             this.Name = "DocForm";
             this.Text = "견적서";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DocForm_FormClosing);
             this.Load += new System.EventHandler(this.DocForm_Load);
             this.Resize += new System.EventHandler(this.DocForm_Resize);
             this.panel1.ResumeLayout(false);
