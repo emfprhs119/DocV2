@@ -1,4 +1,4 @@
-﻿namespace Estimate
+﻿namespace DocV2
 {
     partial class DocForm
     {
@@ -32,7 +32,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.label24 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
-            this.button5 = new System.Windows.Forms.Button();
+            this.loadCompanyBtn = new System.Windows.Forms.Button();
             this.t4 = new System.Windows.Forms.TextBox();
             this.t3 = new System.Windows.Forms.TextBox();
             this.t2 = new System.Windows.Forms.TextBox();
@@ -59,7 +59,7 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.headLabel = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.b3 = new System.Windows.Forms.Button();
             this.b2 = new System.Windows.Forms.Button();
@@ -87,7 +87,7 @@
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.label24);
             this.panel1.Controls.Add(this.label23);
-            this.panel1.Controls.Add(this.button5);
+            this.panel1.Controls.Add(this.loadCompanyBtn);
             this.panel1.Controls.Add(this.t4);
             this.panel1.Controls.Add(this.t3);
             this.panel1.Controls.Add(this.t2);
@@ -115,7 +115,7 @@
             // 
             this.label23.BackColor = System.Drawing.SystemColors.Info;
             this.label23.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label23.Font = new System.Drawing.Font("바탕체", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label23.Font = new System.Drawing.Font("맑은 고딕", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label23.Location = new System.Drawing.Point(113, 139);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(212, 33);
@@ -123,16 +123,17 @@
             this.label23.Text = "9,999,999,999원";
             this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // button5
+            // loadCompanyBtn
             // 
-            this.button5.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.button5.Location = new System.Drawing.Point(270, 37);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(30, 30);
-            this.button5.TabIndex = 9;
-            this.button5.Text = "...";
-            this.button5.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
-            this.button5.UseVisualStyleBackColor = true;
+            this.loadCompanyBtn.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.loadCompanyBtn.Location = new System.Drawing.Point(270, 37);
+            this.loadCompanyBtn.Name = "loadCompanyBtn";
+            this.loadCompanyBtn.Size = new System.Drawing.Size(30, 30);
+            this.loadCompanyBtn.TabIndex = 9;
+            this.loadCompanyBtn.Text = "...";
+            this.loadCompanyBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
+            this.loadCompanyBtn.UseVisualStyleBackColor = true;
+            this.loadCompanyBtn.Click += new System.EventHandler(this.loadCompanyBtn_Click);
             // 
             // t4
             // 
@@ -240,7 +241,7 @@
             // s8
             // 
             this.s8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.s8.Font = new System.Drawing.Font("바탕체", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.s8.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.s8.Location = new System.Drawing.Point(273, 170);
             this.s8.Margin = new System.Windows.Forms.Padding(0);
             this.s8.Name = "s8";
@@ -248,11 +249,12 @@
             this.s8.TabIndex = 23;
             this.s8.Text = "label22";
             this.s8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.s8.DoubleClick += new System.EventHandler(this.UserField_DoubleClick);
             // 
             // s6
             // 
             this.s6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.s6.Font = new System.Drawing.Font("바탕체", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.s6.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.s6.Location = new System.Drawing.Point(273, 130);
             this.s6.Margin = new System.Windows.Forms.Padding(0);
             this.s6.Name = "s6";
@@ -260,11 +262,12 @@
             this.s6.TabIndex = 22;
             this.s6.Text = "label21";
             this.s6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.s6.DoubleClick += new System.EventHandler(this.UserField_DoubleClick);
             // 
             // s3
             // 
             this.s3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.s3.Font = new System.Drawing.Font("바탕체", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.s3.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.s3.Location = new System.Drawing.Point(273, 50);
             this.s3.Margin = new System.Windows.Forms.Padding(0);
             this.s3.Name = "s3";
@@ -272,11 +275,12 @@
             this.s3.TabIndex = 21;
             this.s3.Text = "label20";
             this.s3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.s3.DoubleClick += new System.EventHandler(this.UserField_DoubleClick);
             // 
             // s7
             // 
             this.s7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.s7.Font = new System.Drawing.Font("바탕체", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.s7.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.s7.Location = new System.Drawing.Point(77, 170);
             this.s7.Margin = new System.Windows.Forms.Padding(0);
             this.s7.Name = "s7";
@@ -284,11 +288,12 @@
             this.s7.TabIndex = 20;
             this.s7.Text = "label19";
             this.s7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.s7.DoubleClick += new System.EventHandler(this.UserField_DoubleClick);
             // 
             // s5
             // 
             this.s5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.s5.Font = new System.Drawing.Font("바탕체", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.s5.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.s5.Location = new System.Drawing.Point(77, 130);
             this.s5.Margin = new System.Windows.Forms.Padding(0);
             this.s5.Name = "s5";
@@ -296,11 +301,12 @@
             this.s5.TabIndex = 19;
             this.s5.Text = "label18";
             this.s5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.s5.DoubleClick += new System.EventHandler(this.UserField_DoubleClick);
             // 
             // s4
             // 
             this.s4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.s4.Font = new System.Drawing.Font("바탕체", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.s4.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.s4.Location = new System.Drawing.Point(77, 90);
             this.s4.Margin = new System.Windows.Forms.Padding(0);
             this.s4.Name = "s4";
@@ -308,11 +314,12 @@
             this.s4.TabIndex = 18;
             this.s4.Text = "label17";
             this.s4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.s4.DoubleClick += new System.EventHandler(this.UserField_DoubleClick);
             // 
             // s2
             // 
             this.s2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.s2.Font = new System.Drawing.Font("바탕체", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.s2.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.s2.Location = new System.Drawing.Point(77, 50);
             this.s2.Margin = new System.Windows.Forms.Padding(0);
             this.s2.Name = "s2";
@@ -320,11 +327,12 @@
             this.s2.TabIndex = 17;
             this.s2.Text = "label16";
             this.s2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.s2.DoubleClick += new System.EventHandler(this.UserField_DoubleClick);
             // 
             // s1
             // 
             this.s1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.s1.Font = new System.Drawing.Font("바탕체", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.s1.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.s1.Location = new System.Drawing.Point(77, 0);
             this.s1.Margin = new System.Windows.Forms.Padding(0);
             this.s1.Name = "s1";
@@ -332,11 +340,12 @@
             this.s1.TabIndex = 10;
             this.s1.Text = "label15";
             this.s1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.s1.DoubleClick += new System.EventHandler(this.UserField_DoubleClick);
             // 
             // label12
             // 
             this.label12.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label12.Font = new System.Drawing.Font("바탕체", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label12.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label12.Location = new System.Drawing.Point(228, 170);
             this.label12.Margin = new System.Windows.Forms.Padding(0);
             this.label12.Name = "label12";
@@ -348,7 +357,7 @@
             // label13
             // 
             this.label13.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label13.Font = new System.Drawing.Font("바탕체", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label13.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label13.Location = new System.Drawing.Point(228, 130);
             this.label13.Margin = new System.Windows.Forms.Padding(0);
             this.label13.Name = "label13";
@@ -360,7 +369,7 @@
             // label14
             // 
             this.label14.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label14.Font = new System.Drawing.Font("바탕체", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label14.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label14.Location = new System.Drawing.Point(228, 50);
             this.label14.Margin = new System.Windows.Forms.Padding(0);
             this.label14.Name = "label14";
@@ -372,7 +381,7 @@
             // label11
             // 
             this.label11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label11.Font = new System.Drawing.Font("바탕체", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label11.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label11.Location = new System.Drawing.Point(32, 170);
             this.label11.Margin = new System.Windows.Forms.Padding(0);
             this.label11.Name = "label11";
@@ -384,7 +393,7 @@
             // label10
             // 
             this.label10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label10.Font = new System.Drawing.Font("바탕체", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label10.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label10.Location = new System.Drawing.Point(32, 130);
             this.label10.Margin = new System.Windows.Forms.Padding(0);
             this.label10.Name = "label10";
@@ -396,7 +405,7 @@
             // label9
             // 
             this.label9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label9.Font = new System.Drawing.Font("바탕체", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label9.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label9.Location = new System.Drawing.Point(32, 90);
             this.label9.Margin = new System.Windows.Forms.Padding(0);
             this.label9.Name = "label9";
@@ -408,7 +417,7 @@
             // label8
             // 
             this.label8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label8.Font = new System.Drawing.Font("바탕체", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label8.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label8.Location = new System.Drawing.Point(32, 50);
             this.label8.Margin = new System.Windows.Forms.Padding(0);
             this.label8.Name = "label8";
@@ -420,7 +429,7 @@
             // label7
             // 
             this.label7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label7.Font = new System.Drawing.Font("바탕체", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label7.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label7.Location = new System.Drawing.Point(32, 0);
             this.label7.Margin = new System.Windows.Forms.Padding(0);
             this.label7.Name = "label7";
@@ -432,26 +441,26 @@
             // label6
             // 
             this.label6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label6.Font = new System.Drawing.Font("바탕체", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label6.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label6.Location = new System.Drawing.Point(0, 0);
             this.label6.Margin = new System.Windows.Forms.Padding(0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(32, 210);
             this.label6.TabIndex = 0;
-            this.label6.Text = "공  급  자";
+            this.label6.Text = "공급자";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label1
+            // headLabel
             // 
-            this.label1.BackColor = System.Drawing.SystemColors.Window;
-            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label1.Font = new System.Drawing.Font("맑은 고딕", 39.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label1.Location = new System.Drawing.Point(12, 8);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(330, 75);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "견적서";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.headLabel.BackColor = System.Drawing.SystemColors.Window;
+            this.headLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.headLabel.Font = new System.Drawing.Font("맑은 고딕", 35F);
+            this.headLabel.Location = new System.Drawing.Point(12, 8);
+            this.headLabel.Name = "headLabel";
+            this.headLabel.Size = new System.Drawing.Size(330, 75);
+            this.headLabel.TabIndex = 0;
+            this.headLabel.Text = "견적서";
+            this.headLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panel4
             // 
@@ -594,7 +603,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 738);
             this.Controls.Add(this.panel3);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.headLabel);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
@@ -616,7 +625,7 @@
         #endregion
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label headLabel;
         private System.Windows.Forms.TextBox t4;
         private System.Windows.Forms.TextBox t3;
         private System.Windows.Forms.TextBox t2;
@@ -629,7 +638,7 @@
         private System.Windows.Forms.Button b3;
         private System.Windows.Forms.Button b2;
         private System.Windows.Forms.Button b1;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button loadCompanyBtn;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label10;

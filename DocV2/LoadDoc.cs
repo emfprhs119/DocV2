@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Estimate
+namespace DocV2
 {
     public partial class LoadDoc : Form
     {
@@ -24,11 +19,12 @@ namespace Estimate
 
         private void LoadDoc_Load(object sender, EventArgs e)
         {
-            RefreshData();
+            RefreshData(null);
         }
-        private void RefreshData()
+        private void RefreshData(string query)
         {
-            string query = "select info_1 as '   날짜',info_2 as '   상호',num as '번호' from doc ";
+            if (query == null || query == "")
+                query = "select info_1 as '   날짜',info_2 as '   상호',num as '번호' from doc where docID LIKE '"+docForm.formName+"%' order by info_1 desc,info_2,num";
             dataGridView1.DataSource = SQLiteWrapper.GetDataTable(query);
             dataGridView1.Columns[0].Width = 80;
 
@@ -43,13 +39,13 @@ namespace Estimate
                 dataGridView1.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             }
             dataGridView1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            
+
         }
 
 
         public new void Show()
         {
-            RefreshData();
+            RefreshData(null);
             base.Show();
         }
 
@@ -68,17 +64,31 @@ namespace Estimate
         private void button2_Click(object sender, EventArgs e)
         {
             SQLiteWrapper.DeleteDoc(GetId());
-            RefreshData();
+            searchBox.Text = "";
+            RefreshData(null);
         }
         private string GetId()
         {
-            return dataGridView1.SelectedRows[0].Cells[0].Value + "_" + dataGridView1.SelectedRows[0].Cells[1].Value + "_" + dataGridView1.SelectedRows[0].Cells[2].Value;
+            if (dataGridView1.Rows.Count > 0)
+                return docForm.formName+"-"+dataGridView1.SelectedRows[0].Cells[0].Value + "_" + dataGridView1.SelectedRows[0].Cells[1].Value + "_" + dataGridView1.SelectedRows[0].Cells[2].Value;
+            else
+                return "";
         }
 
         private void LoadDoc_FormClosing(object sender, FormClosingEventArgs e)
         {
+            searchBox.Text = "";
             e.Cancel = true;
             Hide();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            string query = "select doc.info_1 as '   날짜',doc.info_2 as '   상호',num as '번호' from doc,item where doc.docId=item.docId and "+
+                "(item.column_0 like '%"+searchBox.Text+ "%' or  item.column_1 like '%" + searchBox.Text + "%' or item.column_2 like '%" + searchBox.Text + "%') "
+                + "and doc.docID LIKE '" + docForm.formName + "%' order by doc.info_1 desc,doc.info_2,doc.num";
+
+            RefreshData(query);
         }
     }
 }

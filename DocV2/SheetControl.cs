@@ -1,22 +1,17 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using unvell.ReoGrid;
 using unvell.ReoGrid.DataFormat;
 using unvell.ReoGrid.Events;
-using unvell.ReoGrid.IO;
 
-namespace Estimate
+namespace DocV2
 {
-    
+
     public class SheetControl
     //public partial class DocForm : Form
     {
@@ -75,8 +70,6 @@ namespace Estimate
             totalLabel = label23;
             this.g = g;
             isModified = true;
-
-
         }
         private void FormulaUpdate(RangePosition rangePosition)
         {
@@ -296,7 +289,14 @@ namespace Estimate
                     i++;
                 }
             }
-            
+
+            RangePosition lastRows = RangePosition.FromCellPosition(sheet.Rows, 0, sheet.Rows, sheet.Columns);
+            sheet.IterateCells(lastRows, false, (row, col, cell) =>
+            {
+                cell.IsReadOnly = true;
+                return true;
+            });
+
             ResetSheetWidth(null);
 
             isModified = false;
@@ -395,8 +395,10 @@ namespace Estimate
         public void PasteData(string text,RangePosition rangePosition)
         {
             sheet.EndEdit(EndEditReason.Cancel);
+            /*
             if (!text.Contains("\t"))
                 return;
+                */
             object[,] data = RGUtility.ParseTabbedString(text);
             sheet.SetRangeData(rangePosition, data, true);
         }
@@ -406,6 +408,8 @@ namespace Estimate
         }
         private void Sheet_ColumnsWidthChanged(object sender, ColumnsWidthChangedEventArgs e)
         {
+            if (reoGrid.Width < 10)
+                return;
             for (int i = 0; i < sheet.Rows-1; i++)
             {
                 ReshapeFontSize(sheet.Cells[i, e.Index]);
@@ -493,13 +497,23 @@ namespace Estimate
                     if (sheet.Cells[i, j].Data != null)
                     {
                         strArr[i][j] = sheet.Cells[i, j].DisplayText;
-                        if (j != 5 && j != 6)
+                        if (!sheet.Cells[i, j].IsReadOnly)
                             lastRow = i + 1;
+                        //if (j != 5 && j != 6)
                     }
                 }
             }
             var segment = new ArraySegment<string[]>(strArr, 0, lastRow);
             return segment.ToArray();
+        }
+        public string[] SumValues()
+        {
+            string[] strArr = new string[sheet.ColumnCount];
+            for (int j = 0; j < sheet.ColumnCount; j++)
+            {
+                strArr[j] = sheet.Cells[sheet.RowCount-1, j].DisplayText;
+            }
+            return strArr;
         }
         private void PrintSheetError(string str)
         {

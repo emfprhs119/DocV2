@@ -1,35 +1,69 @@
 ﻿using System;
-using System.IO;
-using System.Data.SQLite;
 using System.Data;
+using System.Data.SQLite;
+using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 /*
 // doc
 string sql = "create table doc (docID integer primary key AUTOINCREMENT,columnWidths TEXT,";*/
 
-namespace Estimate
+namespace DocV2
 {
     class SQLiteWrapper
     {
-        static readonly string ConnectionString = @"Data Source=save.db;Version=3;";
+        static string ConnectionString = @"Data Source=filename;Version=3;";
         static readonly string dbFileName = "save.db";
         static SQLiteConnection conn;
         static SQLiteCommand command;
-        public static void PrepareDB(int oppLength,int itemLength)
+        public static void PrepareDB(int itemLength)
         {
+            DialogResult dialogResult;
+            var process = Process.GetCurrentProcess(); // Or whatever method you are using
+            string ConnectionStringOrg = @"Data Source=filename;Version=3;";
+            string fullPath = "";
             /* for debug code */
             //File.Delete(dbFileName);
+            if (Properties.Settings.Default.path == null)
+                Properties.Settings.Default.path = "";
+
+            fullPath = Path.Combine(Properties.Settings.Default.path, dbFileName);
+            ConnectionString = ConnectionStringOrg.Replace("filename", fullPath);
             conn = new SQLiteConnection(ConnectionString);
-            if (!File.Exists(dbFileName))
+
+
+            if (!File.Exists(fullPath))
             {
-                
-                SQLiteConnection.CreateFile(dbFileName);
+                dialogResult = MessageBox.Show(Properties.Settings.Default.path + "\n저장 경로에 save.db 파일이 없습니다.\n저장 경로를 선택해주세요.", "데이터베이스", MessageBoxButtons.OK);
+                if (dialogResult == DialogResult.OK)
+                {
+                    FolderBrowserDialog folderBrowser = new FolderBrowserDialog
+                    {
+                        Description = "견적서 및 거래명세서 데이터를 저장할 경로를 선택하세요.",
+                        RootFolder = Environment.SpecialFolder.Desktop
+                    };
+                    dialogResult = folderBrowser.ShowDialog();
+                    if (dialogResult != DialogResult.Cancel && Properties.Settings.Default.path != folderBrowser.SelectedPath)
+                    {
+                        Properties.Settings.Default.path = folderBrowser.SelectedPath;
+                        Properties.Settings.Default.Save();
+                    }
+                }
+
+                fullPath = Path.Combine(Properties.Settings.Default.path, dbFileName);
+                ConnectionString = ConnectionStringOrg.Replace("filename", fullPath);
+                conn = new SQLiteConnection(ConnectionString);
+
+                if (File.Exists(fullPath))
+                    return;
+                SQLiteConnection.CreateFile(fullPath);
                 conn.Open();
                 // doc
                 string sql = "create table doc (docID TEXT,num integer,";
-                for (int i = 0; i < oppLength; i++) {
-                    sql += "info_"+i+ " TEXT";
-                    if (i < oppLength - 1)
+                for (int i = 0; i < 5; i++)
+                {
+                    sql += "info_" + i + " TEXT";
+                    if (i < 5 - 1)
                     {
                         sql += ",";
                     }
@@ -109,11 +143,13 @@ namespace Estimate
             }
         }
 
-        public static string AddDoc(string docID,string[] info,string[][] items)
+        public static string AddDoc(string formName,string docID,string[] info,string[][] items)
         {
-            if (docID != null)
+            if (docID != null && docID.Contains(formName+"-"+info[1] + "_" + info[2]))
                 DeleteDoc(docID);
-            docID = InsertDoc(docID, info);
+            else
+                docID = null;
+            docID = InsertDoc(formName,docID, info);
             InsertItems(docID, items);
             return docID;
         }
@@ -129,7 +165,7 @@ namespace Estimate
             }
         }
 
-        private static string InsertDoc(string docID, string[] info)
+        private static string InsertDoc(string formName, string docID, string[] info)
         {
             Int64 id = 0;
             string sql;
@@ -138,12 +174,19 @@ namespace Estimate
                 conn.Open();
                 if (docID == null)
                 {
-                    sql = "select num from doc where info_1 = '" + info[1] + "' and info_2 = '" + info[2] + "'order by num DESC ;";
+                    sql = "select num from doc where docID LIKE '" + formName + "%'  info_1 = '" + info[1] + "' and info_2 = '" + info[2] + "'order by num DESC ;";
                     command = new SQLiteCommand(sql, conn);
-                    object scalar = command.ExecuteScalar();
-                    if (scalar != null)
-                        id = ((Int64)scalar) + 1;
-                    docID = info[1] + "_" + info[2] + "_" + id;
+                    try
+                    {
+                        object scalar = command.ExecuteScalar();
+                        if (scalar != null)
+                            id = ((Int64)scalar) + 1;
+                    }
+                    catch { }
+                    finally
+                    {
+                        docID = formName + "-" + info[1] + "_" + info[2] + "_" + id;
+                    }
                 }
                 else
                 {
@@ -162,11 +205,13 @@ namespace Estimate
             using (var conn = new SQLiteConnection(ConnectionString))
             {
                 conn.Open();
+                SQLiteTransaction transaction = conn.BeginTransaction();
                 for (int i = 0; i < items.Length; i++)
                 {
                     string sql = "insert into item values('"+ docID + "'," + i + "," + ArrToQueryString(items[i]) + ");";
                     new SQLiteCommand(sql, conn).ExecuteNonQuery();
                 }
+                transaction.Commit();
                 conn.Close();
             }
         }

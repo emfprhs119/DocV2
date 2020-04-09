@@ -54,7 +54,7 @@
 		},
 		{
 			"Name":"공급가액",
-			"Width":80,
+			"Width":100,
 			"Format":"Currency",
 			"Calc":"='단가'*'수량'",
 			"ReadOnly":true,

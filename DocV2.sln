@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.329
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estimate", "Estimate\Estimate.csproj", "{54BCBC40-23AC-44B7-89B8-336646991CCD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocV2", "DocV2\DocV2.csproj", "{54BCBC40-23AC-44B7-89B8-336646991CCD}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{18CD55B3-F069-423F-BDBF-5B54602A35EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,11 +17,13 @@ Global
 		{54BCBC40-23AC-44B7-89B8-336646991CCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54BCBC40-23AC-44B7-89B8-336646991CCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54BCBC40-23AC-44B7-89B8-336646991CCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18CD55B3-F069-423F-BDBF-5B54602A35EC}.Debug|Any CPU.ActiveCfg = Debug
+		{18CD55B3-F069-423F-BDBF-5B54602A35EC}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {BBFBAC79-C643-4078-90D5-5D5B11E19A6D}
+		SolutionGuid = {E1A8C9EF-D941-4816-BD32-1C225D22120E}
 	EndGlobalSection
 EndGlobal

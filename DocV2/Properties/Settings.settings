@@ -1,0 +1,33 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="DocV2.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="path" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="s1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">입력 (더블 클릭)</Value>
+    </Setting>
+    <Setting Name="s2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">입력 (더블 클릭)</Value>
+    </Setting>
+    <Setting Name="s3" Type="System.String" Scope="User">
+      <Value Profile="(Default)">입력 (더블 클릭)</Value>
+    </Setting>
+    <Setting Name="s4" Type="System.String" Scope="User">
+      <Value Profile="(Default)">입력 (더블 클릭)</Value>
+    </Setting>
+    <Setting Name="s5" Type="System.String" Scope="User">
+      <Value Profile="(Default)">입력 (더블 클릭)</Value>
+    </Setting>
+    <Setting Name="s6" Type="System.String" Scope="User">
+      <Value Profile="(Default)">입력 (더블 클릭)</Value>
+    </Setting>
+    <Setting Name="s7" Type="System.String" Scope="User">
+      <Value Profile="(Default)">입력 (더블 클릭)</Value>
+    </Setting>
+    <Setting Name="s8" Type="System.String" Scope="User">
+      <Value Profile="(Default)">입력 (더블 클릭)</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
