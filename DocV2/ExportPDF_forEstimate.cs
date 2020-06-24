@@ -13,6 +13,7 @@ namespace DocV2
             this.exportPDF = exportPDF;
             FrontShowRow = 22;
             BackShowRow = 34;
+            formName = "견적서";
         }
         public override Paragraph GetTitle()
         {
@@ -26,12 +27,16 @@ namespace DocV2
         {
             return Path.Combine("견적서", headerDatas["상 호"]);
         }
-
+        /*
         public override PdfPTable GetTableItem(float[] widths, PdfPCell[] itemTableHeader, PdfPCell[] itemTableFooter, string[][] strArr, int index)
         {
             return GetTableItem(widths, itemTableHeader, itemTableFooter, strArr, index, TableType.TABLE_ESTIMATE);
         }
-
+        */
+        public override TableType GetTableType()
+        {
+            return TableType.TABLE_ESTIMATE;
+        }
         public override PdfPTable GetHeader(Dictionary<string, string> kv, string sum)
         {
             PdfPTable table = new PdfPTable(2);
@@ -43,35 +48,35 @@ namespace DocV2
             var ltKVArr = new string[] {
                 " 견 적 일 :", kv["견적일"],
                 " 상     호 :", kv["상 호"],
-                " 전화번호 :", kv["전화번호"],
+                "전화번호 :", kv["전화번호"],
                 " 담 당 자 :", kv["담당자"],
-                "합계금액", sum+"원"};
+                "합계금액 :", sum+"원"};
             var ltHAligns = new int[] { Element.ALIGN_RIGHT, Element.ALIGN_LEFT, Element.ALIGN_RIGHT, Element.ALIGN_LEFT, Element.ALIGN_RIGHT, Element.ALIGN_LEFT, Element.ALIGN_RIGHT, Element.ALIGN_LEFT, Element.ALIGN_RIGHT, Element.ALIGN_RIGHT, };
 
             var rtWidth = new float[] { 8, 12, 30, 12, 30 };
-            var rtKVArr = new string[] { "공급자",
-                "등록번호", "        "+kv["등록번호"],
-                "상호", kv["상호"],
+            var rtKVArr = new string[] { "",
+                "등록"+new Chunk("\n")+"번호",kv["등록번호"],
+                "공","상호", kv["상호"],
                 "성명", kv["성명"],
-                "주소", kv["주소"],
-                "업태", kv["업태"],
+                "급","주소", kv["주소"],
+                "자","업태", kv["업태"],
                 "종목", kv["종목"],
-                "전화", kv["전화"],
+                "","전화", kv["전화"],
                 "팩스", kv["팩스"]};
-            var rtHAligns = new int[] { Element.ALIGN_CENTER, Element.ALIGN_CENTER, Element.ALIGN_LEFT, Element.ALIGN_CENTER, Element.ALIGN_LEFT, Element.ALIGN_CENTER, Element.ALIGN_LEFT, Element.ALIGN_CENTER, Element.ALIGN_LEFT, Element.ALIGN_CENTER, Element.ALIGN_LEFT, Element.ALIGN_CENTER, Element.ALIGN_LEFT, Element.ALIGN_CENTER, Element.ALIGN_LEFT, Element.ALIGN_CENTER, Element.ALIGN_LEFT, };
+            var rtHAligns = new int[] { Element.ALIGN_CENTER, Element.ALIGN_CENTER, Element.ALIGN_CENTER, Element.ALIGN_CENTER, Element.ALIGN_CENTER, Element.ALIGN_LEFT, Element.ALIGN_CENTER, Element.ALIGN_LEFT, Element.ALIGN_CENTER, Element.ALIGN_CENTER, Element.ALIGN_LEFT, Element.ALIGN_CENTER, Element.ALIGN_CENTER, Element.ALIGN_LEFT, Element.ALIGN_CENTER, Element.ALIGN_LEFT, Element.ALIGN_CENTER, Element.ALIGN_CENTER, Element.ALIGN_LEFT, Element.ALIGN_CENTER, Element.ALIGN_LEFT, };
 
-            var colspansSup = new int[] { 1, 1, 3, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1 };
+            var colspansSup = new int[] { 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
             /* *********** */
-            PdfPCell ltCell = new PdfPCell(GetTableHeader(ltWidth, ltKVArr, ltHAligns, null, 24f, TableType.LT_ESTIMATE));
+            PdfPCell ltCell = new PdfPCell(GetDocHeader(ltWidth, ltKVArr, ltHAligns, null, 24f, TableType.LT_ESTIMATE));
             ltCell.HorizontalAlignment = Element.ALIGN_LEFT;
             ltCell.Border = 0;
-            PdfPCell rtCell = new PdfPCell(GetTableHeader(rtWidth, rtKVArr, rtHAligns, colspansSup,24f, TableType.RT_ESTIMATE));
+            PdfPCell rtCell = new PdfPCell(GetDocHeader(rtWidth, rtKVArr, rtHAligns, colspansSup,24f, TableType.RT_ESTIMATE));
             rtCell.HorizontalAlignment = Element.ALIGN_RIGHT;
             rtCell.Border = 0;
             ltCell.PaddingRight = 10;
             table.AddCell(ltCell);
             table.AddCell(rtCell);
-
+            table.SetWidths(new float[] {5,6 });
             return table;
         }
 
@@ -80,14 +85,14 @@ namespace DocV2
         public override PdfPCell[] GetCellTableHeader()
         {
             PdfPCell[] titleCell = new PdfPCell[8];
-            titleCell[0] = new PdfPCell(new Paragraph("품목", NORMAL10Font));
-            titleCell[1] = new PdfPCell(new Paragraph("규격", NORMAL10Font));
-            titleCell[2] = new PdfPCell(new Paragraph("자재비", NORMAL10Font));
-            titleCell[3] = new PdfPCell(new Paragraph("가공비", NORMAL10Font));
-            titleCell[4] = new PdfPCell(new Paragraph("수량", NORMAL10Font));
-            titleCell[5] = new PdfPCell(new Paragraph("단가", NORMAL10Font));
-            titleCell[6] = new PdfPCell(new Paragraph("공급가액", NORMAL10Font));
-            titleCell[7] = new PdfPCell(new Paragraph("비고", NORMAL10Font));
+            titleCell[0] = new PdfPCell(new Paragraph("품목", itemHeaderFont));
+            titleCell[1] = new PdfPCell(new Paragraph("규격", itemHeaderFont));
+            titleCell[2] = new PdfPCell(new Paragraph("자재비", itemHeaderFont));
+            titleCell[3] = new PdfPCell(new Paragraph("가공비", itemHeaderFont));
+            titleCell[4] = new PdfPCell(new Paragraph("수량", itemHeaderFont));
+            titleCell[5] = new PdfPCell(new Paragraph("단가", itemHeaderFont));
+            titleCell[6] = new PdfPCell(new Paragraph("공급가액", itemHeaderFont));
+            titleCell[7] = new PdfPCell(new Paragraph("비고", itemHeaderFont));
             // 컬럼 바탕색
             foreach (PdfPCell cell in titleCell)
             {
@@ -124,7 +129,7 @@ namespace DocV2
                         backColor = sumColor;
                         break;
                 }
-                footerCell[i] = new PdfPCell(new Paragraph(text, NORMAL10Font));
+                footerCell[i] = new PdfPCell(new Paragraph(text, itemHeaderFont));
                 footerCell[i].HorizontalAlignment = alignment;
                 footerCell[i].VerticalAlignment = Element.ALIGN_MIDDLE;
                 footerCell[i].Colspan = colspan;

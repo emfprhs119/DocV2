@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Windows.Forms;
 using unvell.ReoGrid;
+using unvell.ReoGrid.Data;
 using unvell.ReoGrid.DataFormat;
 using unvell.ReoGrid.Events;
 
@@ -13,7 +14,6 @@ namespace DocV2
 {
 
     public class SheetControl
-    //public partial class DocForm : Form
     {
         ReoGridControl reoGrid;
         Font font;
@@ -27,25 +27,67 @@ namespace DocV2
         HashSet<CellConfig> restoreSet;
         public bool isModified;
         DocForm docForm;
+        AutoColumnFilter autoColumnFilter;
+        int zoom;
         public float[] GetColumnWidths()
         {
-            return columnWidths;
+            if (columnWidths == null)
+                return null;
+            return (float[])columnWidths.Clone();
+        }
+        public string[] GetColumnHeaderNames() {
+            string[] strs = new string[sheet.Columns];
+            for(int i = 0; i < strs.Length; i++)
+            {
+                strs[i] = sheet.ColumnHeaders[i].Text;
+            }
+            return strs;
         }
         public void SetColumnWidths(float[] widths)
         {
-            columnWidths = widths;
+            if (columnWidths != null)
+            {
+                float sum = 0;
+                float sumRp = 0;
+                foreach (float w in columnWidths)
+                    sum += w;
+                foreach (float w in widths)
+                    sumRp += w;
+                for(int i=0;i< columnWidths.Length; i++)
+                {
+                    columnWidths[i] = widths[i] * sum/sumRp;
+                }
+            }else
+                columnWidths = widths;
             ResetSheetWidth(null);
         }
+        public string GetSelectionRowLine()
+        {
+            string str = sheet.GetCell(sheet.SelectionRange.Row, 0).DisplayText;
+            for (int i = 1; i < sheet.ColumnCount; i++)
+                str += "_"+sheet.GetCell(sheet.SelectionRange.Row, i).DisplayText;
+            return str;
+        }
+        public void SetSelectionMode(WorksheetSelectionMode mode)
+        {
+            sheet.SelectionMode = mode;
+        }
+        public void EnableFilter()
+        {
+            if (autoColumnFilter != null)
+                autoColumnFilter.Detach();
+            autoColumnFilter = sheet.CreateColumnFilter(0,sheet.ColumnCount-1);
+        }
+
         public string TotalString()
         {
-
-            uint sumValue = 0;
+            float sumValue = 0;
             for (int i = 0; i < sheet.Columns; i++)
             {
                 if (sheet.GetCellData(sheet.Rows - 1, i) != null)
                 {
-                    uint tmp;
-                    if (uint.TryParse(sheet.GetCellData((sheet.Rows - 1), i).ToString(), out tmp))
+                    float tmp;
+                    if (float.TryParse(sheet.GetCellData((sheet.Rows - 1), i).ToString(), out tmp))
                     {
                         sumValue += tmp;
                     }
@@ -55,7 +97,7 @@ namespace DocV2
                     }
                 }
             }
-            return string.Format("{0:c}", sumValue).Substring(1);
+            return string.Format("{0:c}", sumValue).Replace("₩","");
         }
 
         private void RefreshTotalLabel()
@@ -63,14 +105,17 @@ namespace DocV2
             totalLabel.Text = TotalString() + "원";
         }
 
-        public SheetControl(DocForm docForm, unvell.ReoGrid.ReoGridControl reoGrid, Label label23, Graphics g)
+        public SheetControl(DocForm docForm, unvell.ReoGrid.ReoGridControl reoGrid, Label label23, Graphics g,int zoom,bool useFunc)
         {
             this.docForm = docForm;
             this.reoGrid = reoGrid;
             totalLabel = label23;
             this.g = g;
             isModified = true;
+            this.zoom = zoom;
+            InitReoGrid(useFunc);
         }
+
         private void FormulaUpdate(RangePosition rangePosition)
         {
             
@@ -115,6 +160,38 @@ namespace DocV2
                 }
             }
         }
+
+        internal void PasteData(DataTable dataTable)
+        {
+            sheet.Rows = dataTable.Rows.Count;
+            sheet.Columns = dataTable.Columns.Count;
+            for (int i = 0; i < dataTable.Columns.Count; i++)
+                sheet.ColumnHeaders[i].Text = dataTable.Columns[i].Caption;
+            sheet["A1"] = dataTable;
+            RangePosition rangePosition = RangePosition.FromCellPosition(0, 0, sheet.Rows, sheet.Columns);
+            if (dataTable.Rows.Count != 0)
+            {
+                reoGrid.Enabled = true;
+                sheet.IterateCells(rangePosition, false, (row, col, cell) =>
+                {
+                    cell.IsReadOnly = true;
+                    return true;
+                });
+                sheet.SetRangeBorders(rangePosition, BorderPositions.All, new RangeBorderStyle { Color = Color.Black, Style = BorderLineStyle.Solid });
+                sheet.SetRangeDataFormat(rangePosition, unvell.ReoGrid.DataFormat.CellDataFormatFlag.Text);
+            }
+            else
+                reoGrid.Enabled = false;
+        }
+        public void RegistFunc(System.EventHandler<unvell.ReoGrid.Events.CellMouseEventArgs> sheet_CellMouseDown)
+        {
+            sheet.CellMouseDown += sheet_CellMouseDown;
+            sheet.SelectionRangeChanged += (object sender, RangeEventArgs e)=> {
+                if (sheet.SelectionMode == WorksheetSelectionMode.SingleRow)
+                    sheet.SelectionRange = new RangePosition(e.Range.Row, 0, 1, sheet.ColumnCount);
+            };
+        }
+
         public void AttachMenu(ToolStripMenuItem[] menuItems)
         {
             foreach(ToolStripMenuItem menuItem in menuItems)
@@ -161,20 +238,43 @@ namespace DocV2
                 }
             }
         }
+        public void SheetFontChange()
+        {
+            SheetFontChange(new System.Drawing.Font(Properties.Settings.Default["SheetFontName"].ToString(), float.Parse(Properties.Settings.Default["SheetFontSize"].ToString())));
+        }
+        public void SheetFontChange(Font newFont)
+        {
 
+            Properties.Settings.Default["SheetFontName"] = newFont.Name;
+            Properties.Settings.Default["SheetFontSize"] = newFont.Size.ToString();
+            Properties.Settings.Default.Save();
+            this.font = new Font(newFont.Name,newFont.Size);
+
+            /* unkown bug */
+            var rowCount = sheet.Rows-1;
+            if (sheet.Columns == 8)
+                rowCount = sheet.Rows - 2;
+            /* mayby relative display cell */
+
+            RangePosition rangePosition = RangePosition.FromCellPosition(0, 0, rowCount, sheet.Columns-1);
+            
+            sheet.SetRangeStyles(rangePosition.ToAddress(), new WorksheetRangeStyle()
+            {
+                Flag =  PlainStyleFlag.FontName| PlainStyleFlag.FontSize,
+                FontName = font.Name,
+                FontSize = font.Size
+            });
+        }
         public void InitSheetStyle(JsonElement columnElements)
         {
-            InitReoGrid();
-            font = new System.Drawing.Font("맑은 고딕", 11);
+            sheet.SetRowsHeight(0, initMaxRow, 20);
             restoreSet = new HashSet<CellConfig>();
             var columnSize = columnElements.GetArrayLength();
             sheet.Columns = columnSize;
             columnWidths = new float[sheet.Columns];
             sheet.Rows = initMaxRow + 1;
             sheet.HideRows(initMaxRow, 1);
-            
-            sheet.RowHeaderWidth = 35;
-
+            sheet.RowHeaderWidth = 25;
             Dictionary<string, int> headerFindIndex = new Dictionary<string, int>();
             {
                 int i = 0;
@@ -182,6 +282,7 @@ namespace DocV2
                 {
                     RangePosition rangePosition = RangePosition.FromCellPosition(0, i, sheet.Rows, i);
                     // for Predefined;
+                    
                     sheet.SetRangeStyles(rangePosition, new WorksheetRangeStyle()
                     {
                         Flag = PlainStyleFlag.FontSize | PlainStyleFlag.FontName | PlainStyleFlag.VerticalAlign | PlainStyleFlag.TextWrap,
@@ -190,6 +291,7 @@ namespace DocV2
                         TextWrapMode = TextWrapMode.WordBreak,
                         VAlign = ReoGridVerAlign.Middle,
                     });
+                    
                     sheet.SetRangeBorders(rangePosition, BorderPositions.All,new RangeBorderStyle{Color = Color.Black,Style = BorderLineStyle.Solid});
                     // name
                     sheet.ColumnHeaders[i].Text = columnElement.GetProperty("Name").GetString();
@@ -231,6 +333,9 @@ namespace DocV2
                             Flag = PlainStyleFlag.HorizontalAlign,
                             HAlign = horAlign
                         });
+                        
+
+
                     }
                     // calc
 
@@ -240,7 +345,7 @@ namespace DocV2
                             string exp = subElement.GetString();
                             foreach (KeyValuePair<string,int> pair in headerFindIndex.AsEnumerable())
                             {
-                                exp = exp.Replace(pair.Key,((char)('A'+pair.Value)).ToString()+1);
+                                exp = exp.Replace(pair.Key, "IF(ISNUMBER("+((char)('A'+pair.Value)).ToString()+1+ "),"+((char)('A'+pair.Value)).ToString()+1+",0)");
                             }
                             RangePosition startPosition = RangePosition.FromCellPosition(0, i, 0, i);
                             RangePosition fillPosition = RangePosition.FromCellPosition(1, i, sheet.Rows - 2, i);
@@ -296,25 +401,28 @@ namespace DocV2
                 cell.IsReadOnly = true;
                 return true;
             });
-
-            ResetSheetWidth(null);
-
+            Space();
+            RefreshTotalLabel();
+            SheetFontChange();
             isModified = false;
         }
 
         internal void FormResize(float scale)
         {
+            if (columnWidths == null)
+                return;
             for (int i = 0; i < columnWidths.Length; i++)
                 columnWidths[i] = (columnWidths[i] * scale);
             ResetSheetWidth(null);
         }
-
-        private void LoadData()
+        internal void FormResizeOrigin(int width)
         {
-            string text = "";
-            object[,] data = RGUtility.ParseTabbedString(text);
-            //sheet.SetRangeData(e.Range, data, true);
+            float max = 0;
+            for (int i = 0; i < columnWidths.Length; i++)
+                max += columnWidths[i];
+            FormResize((width/2.2f) / max);
         }
+
 
         private int ColumnIndexFindFromName(string str)
         {
@@ -326,12 +434,12 @@ namespace DocV2
             return -1;
         }
 
-        private void InitReoGrid()
+        private void InitReoGrid(bool useFunc)
         {
             reoGrid.SetSettings(WorkbookSettings.View_ShowHorScroll, false);
             reoGrid.SheetTabVisible = false;
             ControlAppearanceStyle rgcs = new ControlAppearanceStyle(Color.LightGray, Color.LightGray, true);
-            rgcs.SelectionBorderWidth = 3;
+            rgcs.SelectionBorderWidth = 5;
             rgcs[ControlAppearanceColors.GridText] = Color.Black;
             rgcs[ControlAppearanceColors.ColHeadText] = Color.Black;
             rgcs[ControlAppearanceColors.ColHeadNormalStart] = Color.WhiteSmoke;
@@ -343,9 +451,8 @@ namespace DocV2
             rgcs[ControlAppearanceColors.RowHeadFullSelected] = Color.LightGray;
             rgcs[ControlAppearanceColors.RowHeadText] = Color.Black;
             reoGrid.ControlStyle = rgcs;
-
             sheet = reoGrid.Worksheets[0];
-            //sheet.SelectionForwardDirection = SelectionForwardDirection.Down;
+            sheet.SelectionForwardDirection = SelectionForwardDirection.Down;
             sheet.SetSettings(WorksheetSettings.Behavior_MouseWheelToZoom, false);
             sheet.SetSettings(WorksheetSettings.Behavior_DoubleClickToResizeHeader, false);
             sheet.SetSettings(WorksheetSettings.Behavior_ShortcutKeyToZoom, false);
@@ -356,18 +463,77 @@ namespace DocV2
             sheet.SetSettings(WorksheetSettings.View_AllowCellTextOverflow, false);
             sheet.SetSettings(WorksheetSettings.Behavior_DoubleClickToFitRowHeight, false);
             sheet.SetSettings(WorksheetSettings.Behavior_DoubleClickToFitColumnWidth, false);
-
-            sheet.CellDataChanged += Sheet_CellDataChanged;
-            sheet.BeforePaste += Sheet_BeforePaste;
-            sheet.AfterPaste += Sheet_RangeDataChanged;
-            sheet.RangeDataChanged += Sheet_RangeDataChanged;
+            
+            
+            //sheet.SetSettings(WorksheetSettings.View_ShowColumnHeader, false);
+            if (useFunc)
+            {
+                sheet.CellDataChanged += Sheet_CellDataChanged;
+                sheet.BeforePaste += Sheet_BeforePaste;
+                sheet.AfterPaste += Sheet_RangeDataChanged;
+                sheet.RangeDataChanged += Sheet_RangeDataChanged;
+                sheet.BeforeRangeMove += Sheet_BeforeRangeMove;
+                sheet.CellDataChanged += (object sender, CellEventArgs e) => {
+                    if (e.Cell.Row == sheet.RowCount-1)
+                        RefreshTotalLabel();
+                    };
+                sheet.BeforeCellEdit += Sheet_BeforeCellEdit;
+                sheet.AfterCellEdit += Sheet_AfterCellEdit;
+                sheet.SelectionRangeChanged += Sheet_SelectionRangeChanged;
+                sheet.AfterCellKeyDown += Sheet_AfterCellKeyDown;
+            }else
+                sheet.SetSettings(WorksheetSettings.View_ShowRowHeader, false);
+            
             sheet.ColumnsWidthChanged += Sheet_ColumnsWidthChanged;
             sheet.BeforeCut += Sheet_BeforeCut;
-            sheet.BeforeRangeMove += Sheet_BeforeRangeMove;
-            sheet.CellDataChanged += (object sender, CellEventArgs e) => RefreshTotalLabel();
-            sheet.RangeDataChanged += (object sender, RangeEventArgs e) => RefreshTotalLabel();
+            font = new System.Drawing.Font(Properties.Settings.Default["SheetFontName"].ToString(), float.Parse(Properties.Settings.Default["SheetFontSize"].ToString()));
+
+            for (int i = 0;i<zoom;i++)
+                sheet.ZoomIn();
         }
 
+        public void Select_Single()
+        {
+            //sheet.SelectionRange = new RangePosition(sheet.SelectionRange.Row,0, 1, sheet.Columns);
+            sheet.SelectRows(sheet.SelectionRange.Row, 1);
+        }
+
+        private void Sheet_AfterCellKeyDown(object sender, AfterCellKeyDownEventArgs e)
+        {
+            if (e.Cell.Data == null && !e.Cell.IsReadOnly)
+            {
+                e.Cell.Data = " ";
+            }
+        }
+
+        private void Sheet_SelectionRangeChanged(object sender, RangeEventArgs e)
+        {
+            if (docForm.formName != "거래명세서")
+                return;
+            if (e.Range.Cols == 1 && e.Range.Rows == 1 && e.Range.Col == 0)
+            {
+                if (sheet.Cells[e.Range.Row,0].Data.Equals(" "))
+                {
+                    if (e.Range.Row > 0)
+                        sheet.Cells[e.Range.Row, 0].Data = sheet.Cells[e.Range.Row - 1, 0].Data;
+                    else
+                        sheet.Cells[e.Range.Row, 0].Data = docForm.ReadToday();
+
+                }
+            }
+        }
+
+        private void Sheet_AfterCellEdit(object sender, CellAfterEditEventArgs e)
+        {
+            if (e.NewData.ToString().Equals(""))
+                e.NewData = " ";
+        }
+
+        private void Sheet_BeforeCellEdit(object sender, CellBeforeEditEventArgs e)
+        {
+            if (e.EditText.Equals(" "))
+                e.EditText = "";
+        }
 
         private void Sheet_BeforeRangeMove(object sender, BeforeCopyOrMoveRangeEventArgs e)
         {
@@ -395,16 +561,55 @@ namespace DocV2
         public void PasteData(string text,RangePosition rangePosition)
         {
             sheet.EndEdit(EndEditReason.Cancel);
-            /*
-            if (!text.Contains("\t"))
-                return;
-                */
+            RangePosition allCols = RangePosition.FromCellPosition(0, 0, sheet.Rows, sheet.Columns);
+            sheet.SuspendDataChangedEvents();
+            sheet.SuspendFormulaReferenceUpdates();
+            sheet.SuspendUIUpdates();
+            
+            if (text == "")
+                text = ",";
+            
+            text = text.Replace(",", "&comma;");
             object[,] data = RGUtility.ParseTabbedString(text);
             sheet.SetRangeData(rangePosition, data, true);
+            sheet.ResumeDataChangedEvents();
+            sheet.ResumeFormulaReferenceUpdates();
+            sheet.ResumeUIUpdates();
+            Space();
+            sheet.Recalculate();
         }
         public void Clear()
         {
-            sheet.ClearRangeContent(sheet.UsedRange, CellElementFlag.Data, true);
+            sheet.ClearRangeContent(sheet.UsedRange, CellElementFlag.Data, false);
+        }
+        public void Space()
+        {
+            RangePosition allCols = RangePosition.FromCellPosition(0, 0, sheet.Rows, sheet.Columns);
+            sheet.SuspendDataChangedEvents();
+            sheet.SuspendFormulaReferenceUpdates();
+            sheet.SuspendUIUpdates();
+            sheet.IterateCells(allCols, false, (row, col, cell) =>
+            {
+                if ((cell.Data == null || cell.Data.Equals("")) && !cell.IsReadOnly)
+                {
+                    cell.Data = " ";
+                }
+                else
+                {
+                    if (cell.DisplayText.Contains("&comma;")){
+                        if (cell.DataFormat == CellDataFormatFlag.Number || cell.DataFormat == CellDataFormatFlag.Currency)
+                            cell.Data = cell.DisplayText.Replace("&comma;", "");
+                        else
+                            cell.Data = cell.DisplayText.Replace("&comma;", ",");
+                    }
+
+                    ReshapeFontSize(cell);
+                }
+                return true;
+            });
+            sheet.ResumeDataChangedEvents();
+            sheet.ResumeFormulaReferenceUpdates();
+            sheet.ResumeUIUpdates();
         }
         private void Sheet_ColumnsWidthChanged(object sender, ColumnsWidthChangedEventArgs e)
         {
@@ -421,7 +626,10 @@ namespace DocV2
                 {
                     width_sum += sheet.ColumnHeaders[i].Width;
                 }
-                var width = reoGrid.Width - SystemInformation.VerticalScrollBarWidth - 36;
+                
+                var width = reoGrid.Width*(1-(0.0585*zoom)) - SystemInformation.VerticalScrollBarWidth - 17.5;
+
+                /*
                 if (width_sum > width)
                 {
                     ResetSheetWidth("최대 넓이를 초과하였습니다.");
@@ -431,8 +639,9 @@ namespace DocV2
                 {
                     ResetSheetWidth("최소 넓이보다 작습니다.");
                     return;
-                }
-                sheet.ColumnHeaders[sheet.Columns - 1].Width = (ushort)(width - width_sum);
+                }*/
+                
+                sheet.ColumnHeaders[sheet.Columns - 1].Width = (ushort)(width - width_sum-8);
                 columnWidths[columnWidths.Length-1] = (ushort)(width - width_sum);
                 if (Math.Abs(e.Width - columnWidths[e.Index]) > 1)
                 {
@@ -464,6 +673,10 @@ namespace DocV2
                 for (int j = e.Range.Row; j <= e.Range.EndRow; j++)
                 {
                     ReshapeFontSize(sheet.Cells[j, i]);
+                    if (sheet.Cells[j, i].Data == null)
+                    {
+                        sheet.Cells[j, i].Data = " ";
+                    }
                 }
             }
         }
@@ -494,7 +707,7 @@ namespace DocV2
                 strArr[i] = new string[sheet.ColumnCount];
                 for (int j = 0; j < sheet.ColumnCount; j++)
                 {
-                    if (sheet.Cells[i, j].Data != null)
+                    if (sheet.Cells[i, j].Data != null && !sheet.Cells[i, j].Data.Equals(" "))
                     {
                         strArr[i][j] = sheet.Cells[i, j].DisplayText;
                         if (!sheet.Cells[i, j].IsReadOnly)

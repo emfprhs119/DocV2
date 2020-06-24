@@ -23,6 +23,8 @@ namespace DocV2
                 stampImage = Image.GetInstance(System.Drawing.Image.FromFile(@"stamp.png"), System.Drawing.Imaging.ImageFormat.Png);
             }
             catch { }
+
+            formName = "거래명세서";
         }
 
         public override void ExAdd(Document document,int page)
@@ -71,9 +73,15 @@ namespace DocV2
         {
               return Path.Combine("거래명세서",headerDatas["거래처명"]);
         }
+        /*
         public override PdfPTable GetTableItem(float[] widths, PdfPCell[] itemTableHeader, PdfPCell[] itemTableFooter, string[][] strArr, int index)
         {
             return GetTableItem(widths, itemTableHeader, itemTableFooter, strArr, index, TableType.TABLE_SPECIFICATION);
+        }
+        */
+        public override TableType GetTableType()
+        {
+            return TableType.TABLE_SPECIFICATION;
         }
         public override PdfPTable GetHeader(Dictionary<string, string> kv, string sum)
         {
@@ -82,23 +90,23 @@ namespace DocV2
             // Header
             /* 임시 데이터 */
 
-            var ltWidth = new float[] { 1,2, 5 };
+            var ltWidth = new float[] { 1.1f,3, 5 };
             var ltKVArr = new string[] {
-                "","",kv["발행일자"],"",kv["거래처명"],
-                "", "    "+sum};
-            var ltHAligns = new int[] { Element.ALIGN_LEFT, Element.ALIGN_LEFT, Element.ALIGN_LEFT, Element.ALIGN_LEFT, Element.ALIGN_LEFT, Element.ALIGN_LEFT, Element.ALIGN_LEFT };
-            var ltcolspansSup = new int[] { 3, 1,2,1,2,2, 1 };
+                "","",kv["발행일자"],"",kv["거래처명"],"",
+                "", sum};
+            var ltHAligns = new int[] { Element.ALIGN_LEFT, Element.ALIGN_LEFT, Element.ALIGN_LEFT, Element.ALIGN_LEFT, Element.ALIGN_LEFT, Element.ALIGN_LEFT, Element.ALIGN_LEFT, Element.ALIGN_LEFT };
+            var ltcolspansSup = new int[] { 3, 1,2,1,1,1,2, 1 };
 
             var rtWidth = new float[] { 9, 39,8,7, 11, 30 };
             var rtKVArr = new string[] {
-                "", "        "+kv["등록번호"],
+                "", kv["등록번호"],
                 "", kv["상호"],
                 "", kv["성명"],
                 "", kv["주소"],
                 "", kv["업태"],
                 "", kv["종목"],
                 "", kv["전화"],
-                "", "   "+kv["팩스"]};
+                "", kv["팩스"]};
             var rtHAligns = new int[] {Element.ALIGN_CENTER, Element.ALIGN_LEFT, Element.ALIGN_CENTER, Element.ALIGN_LEFT, Element.ALIGN_CENTER, Element.ALIGN_LEFT, Element.ALIGN_CENTER, Element.ALIGN_LEFT, Element.ALIGN_CENTER, Element.ALIGN_LEFT, Element.ALIGN_CENTER, Element.ALIGN_LEFT, Element.ALIGN_CENTER, Element.ALIGN_LEFT, Element.ALIGN_CENTER, Element.ALIGN_LEFT, };
 
             var colspansSup = new int[] {
@@ -108,10 +116,13 @@ namespace DocV2
                 1, 1, 1, 3,
                 1, 1, 1, 3 };
             /* *********** */
-            PdfPCell ltCell = new PdfPCell(GetTableHeader(ltWidth, ltKVArr, ltHAligns, ltcolspansSup, 24.5f, TableType.LT_SPECIFICATION));
+            PdfPCell ltCell = new PdfPCell(GetDocHeader(ltWidth, ltKVArr, ltHAligns, ltcolspansSup, 26f, TableType.LT_SPECIFICATION));
             ltCell.HorizontalAlignment = Element.ALIGN_LEFT;
             ltCell.Border = 0;
-            PdfPCell rtCell = new PdfPCell(GetTableHeader(rtWidth, rtKVArr, rtHAligns, colspansSup, 20.8f, TableType.RT_SPECIFICATION));
+            ltCell.FixedHeight = 20.8f * 5;
+            PdfPCell rtCell = new PdfPCell(GetDocHeader(rtWidth, rtKVArr, rtHAligns, colspansSup, 20.8f, TableType.RT_SPECIFICATION));
+            //PdfPCell rtCell = new PdfPCell(GetDocHeader(rtWidth, rtKVArr, rtHAligns, colspansSup, 24.8f, TableType.RT_SPECIFICATION));
+            rtCell.FixedHeight = 20.8f * 5;
             rtCell.HorizontalAlignment = Element.ALIGN_RIGHT;
             rtCell.Border = 0;
             table.SetWidths(new float[] { 20f, 15f });

@@ -48,6 +48,11 @@ namespace DocV2
                         Properties.Settings.Default.path = folderBrowser.SelectedPath;
                         Properties.Settings.Default.Save();
                     }
+                    else
+                    {
+                        Application.Exit();
+                    }
+
                 }
 
                 fullPath = Path.Combine(Properties.Settings.Default.path, dbFileName);
@@ -174,7 +179,7 @@ namespace DocV2
                 conn.Open();
                 if (docID == null)
                 {
-                    sql = "select num from doc where docID LIKE '" + formName + "%'  info_1 = '" + info[1] + "' and info_2 = '" + info[2] + "'order by num DESC ;";
+                    sql = "select num from doc where docID LIKE '" + formName + "%' and info_1 = '" + info[1] + "' and info_2 = '" + info[2] + "'order by num DESC ;";
                     command = new SQLiteCommand(sql, conn);
                     try
                     {

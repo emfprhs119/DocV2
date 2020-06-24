@@ -1,6 +1,11 @@
-﻿using System;
+﻿
+using PdfiumViewer;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -16,30 +21,44 @@ namespace DocV2
         public string formName;
         int formWidth;
         string docID;
-        LoadDoc loadDoc;
-        LoadCompany loadCompany;
+        ListView loadDocView;
+        ListView searchView;
+        PdfView pdfView;
         Dictionary<string,string> headerInfo;
         String configFileName;
         public DocForm(String arg)
         {
+
+            FontRegistryWrapper.ReadRegistry();
             InitializeComponent();
-            
+            MinimumSize = new System.Drawing.Size(800, 600);
+            formName = arg;
             if (arg == "견적서")
                 configFileName = @"resources\estimate.json";
             else if (arg == "거래명세서")
                 configFileName = @"resources\specification.json";
-            sheetControl = new SheetControl(this,reoGrid, label23, this.CreateGraphics());
+            sheetControl = new SheetControl(this,reoGrid, label23, this.CreateGraphics(),7,true);
             sheetControl.AttachMenu(new ToolStripMenuItem[] { menu_RowAdd,menu_RowDelete,menu_DataRemove,menu_Cut,menu_Copy,menu_Paste});
             headerInfo = new Dictionary<string, string>();
-            exportPDF = new ExportPDF();
-            loadDoc = new LoadDoc(this);
-            loadCompany = new LoadCompany(t2);
+            exportPDF = new ExportPDF(this.CreateGraphics(),arg);
+            loadDocView = new ListView(this,ListView.ViewType.DOC);
+            searchView = new ListView(this, ListView.ViewType.ITEM);
+            pdfView = new PdfView(this,exportPDF);
+            searchView.SetRefSheet(sheetControl);
+            KeyPreview = true;
         }
+
         private void DocForm_Load(object sender, EventArgs e)
         {
             InitConfig();
             InitSupply();
-            formWidth = this.Width;
+            InitForm();
+            InitFunc();
+            formWidth = int.Parse(Properties.Settings.Default["Width"].ToString());
+            sheetControl.FormResizeOrigin(formWidth);
+            this.Width = formWidth;
+            this.Height = int.Parse(Properties.Settings.Default["Height"].ToString());
+            SystemFontChange();
             this.ActiveControl = reoGrid;
         }
 
@@ -49,48 +68,131 @@ namespace DocV2
             int columnCount=0;
             using (JsonDocument document = JsonDocument.Parse(jsonString))
             {
-                JsonElement root = document.RootElement;
-                foreach (JsonElement docElement in root.EnumerateArray())
-                {
+                JsonElement docElement = document.RootElement;
+                //foreach (JsonElement docElement in root.EnumerateArray())
+                //{
                     formName = docElement.GetProperty("Form").GetString();
                     this.Text = formName;
-                    headLabel.Text = formName;
-                    b1.Text = "새\n"+formName;
+                    //headLabel.Text = formName;
                     if (docElement.TryGetProperty("Orderer", out JsonElement OrdererElement))
                         InitOrder(OrdererElement);
                     if (docElement.TryGetProperty("Column", out JsonElement columnElements))
                         sheetControl.InitSheetStyle(columnElements);
                     columnCount = columnElements.GetArrayLength();
-                }
+                //}
             }
 
             SQLiteWrapper.PrepareDB(columnCount);
         }
-        private bool SaveQuestion(string message)
+        private void InitSupply()
+        {
+            s1.Text = Properties.Settings.Default["s1"].ToString();
+            s2.Text = Properties.Settings.Default["s2"].ToString();
+            s3.Text = Properties.Settings.Default["s3"].ToString();
+            s4.Text = Properties.Settings.Default["s4"].ToString();
+            s5.Text = Properties.Settings.Default["s5"].ToString();
+            s6.Text = Properties.Settings.Default["s6"].ToString();
+            s7.Text = Properties.Settings.Default["s7"].ToString();
+            s8.Text = Properties.Settings.Default["s8"].ToString();
+        }
+        private void InitForm()
+        {
+            if (formName == "거래명세서")
+            {
+                int topMargin = 65;
+                panel4.Top += topMargin;
+                panel4.Height -= topMargin;
+                label23.Top -= topMargin;
+                label24.Top -= topMargin;
+            }
+            
+            foreach (FontFamily font in System.Drawing.FontFamily.Families)
+            {
+                systemFontDropdown.Items.Add(font.Name);
+            }
+            CompanyDropDownRefresh();
+        }
+        private void CompanyDropDownRefresh()
+        {
+            DataTable table = SQLiteWrapper.GetDataTable("select DISTINCT info_2 from doc order by info_2");
+            t2.Items.Clear();
+            foreach (DataRow dataRow in table.Rows)
+                t2.Items.Add(dataRow[0]);
+        }
+        private void InitFunc()
+        {
+            newDocBtn.Click += (object sender, EventArgs e) =>
+            {
+                if (!SaveQuestion())
+                    return;
+                sheetControl.Clear();
+                t1.Value = DateTime.Today;
+                t2.Text = "";
+                t3.Text = "";
+                t4.Text = "";
+                this.Text = formName;
+                sheetControl.isModified = false;
+            };
+            테이블폰트ToolStripMenuItem.Click += (object sender, EventArgs e) =>
+             {
+                 FontDialog dialog = new FontDialog();
+                 dialog.Font = new Font(Properties.Settings.Default["SheetFontName"].ToString(), float.Parse(Properties.Settings.Default["SheetFontSize"].ToString()));
+                 DialogResult result = dialog.ShowDialog();
+                 if (result.Equals(DialogResult.OK))
+                 {
+                     sheetControl.SheetFontChange(dialog.Font);
+                 }
+             };
+            loadDocBtn.Click += (object sender, EventArgs e) =>
+            {
+                if (!loadDocView.Visible)
+                    loadDocView.Show();
+            };
+            searchDocBtn.Click += (object sender, EventArgs e) =>
+            {
+                if (!searchView.Visible)
+                    searchView.Show();
+            };
+            saveDocBtn.Click += (object sender, EventArgs e) =>
+            {
+                SaveDoc();
+            };
+            previewBtn.Click += (object sender, EventArgs e) =>
+            {
+                pdfView.Show(true);
+            };
+            출력폰트ToolStripMenuItem.Click += (object sender, EventArgs e) =>
+            {
+                pdfView.Show(false);
+            };
+        }
+
+        private bool SaveQuestion()
         {
             if (sheetControl.isModified)
             {
-                DialogResult result = MessageBox.Show("수정된 내용이 있습니다.\n" + message, formName, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                DialogResult result = MessageBox.Show("변경된 내용이 있습니다.\n" + "변경 내용을 저장하시겠습니까?", "저장", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
                 switch (result)
                 {
-                    case DialogResult.Yes:return SaveDoc();
+                    case DialogResult.Yes:return SaveDoc()!=null;
                     case DialogResult.No:break;
                     default:return false;
                 }
         }
             return true;
         }
+
         internal void Load_fromDB(string key)
         {
             if (key == "")
             {
-                loadDoc.Hide();
+                loadDocView.Hide();
                 return;
             }
-            if (!SaveQuestion("저장 후 여시겠습니까?"))
+            if (!SaveQuestion())
                 return;
             string loadData = SQLiteWrapper.LoadDoc(key);
-            Console.WriteLine(loadData);
+            //Console.WriteLine(loadData);
             string[] sn = loadData.Split(new string[]{ ",SplitText"}, StringSplitOptions.None);
 
             sheetControl.Clear();
@@ -108,31 +210,12 @@ namespace DocV2
             docID = key;
             this.Text = docID;
             sheetControl.isModified = false;
-            loadDoc.Hide();
+            /*loadDocView.Hide();
+            this.BringToFront();
+            this.Activate();
+            this.Show();*/
         }
 
-        private void InitSupply()
-        {
-            s1.Text = Properties.Settings.Default["s1"].ToString();
-            s2.Text = Properties.Settings.Default["s2"].ToString();
-            s3.Text = Properties.Settings.Default["s3"].ToString();
-            s4.Text = Properties.Settings.Default["s4"].ToString();
-            s5.Text = Properties.Settings.Default["s5"].ToString();
-            s6.Text = Properties.Settings.Default["s6"].ToString();
-            s7.Text = Properties.Settings.Default["s7"].ToString();
-            s8.Text = Properties.Settings.Default["s8"].ToString();
-
-            /*
-            s1.Text = kv["등록번호"];
-            s2.Text = kv["상호"];
-            s3.Text = kv["성명"];
-            s4.Text = kv["주소"];
-            s5.Text = kv["업태"];
-            s6.Text = kv["종목"];
-            s7.Text = kv["전화"];
-            s8.Text = kv["팩스"];
-            */
-        }
         private void ExtractOrder()
         {
             headerInfo[o1.Text] = t1.Text;
@@ -196,25 +279,21 @@ namespace DocV2
 
         private void DocForm_Resize(object sender, EventArgs e)
         {
-            if (this.Width < 800)
-                this.Width = 800;
             var scale = (float)(this.Width) / formWidth;
             sheetControl.FormResize(scale);
-            
             formWidth = this.Width;
+            Properties.Settings.Default["Width"] = this.Width.ToString();
+            Properties.Settings.Default["Height"] = this.Height.ToString();
+            Properties.Settings.Default.Save();
         }
 
-        private void button3_Click(object sender, EventArgs e)
-        {
-            SaveDoc();
-        }
 
-        private bool SaveDoc()
+        public string SaveDoc(bool isPreview = false)
         {
-            if (t2.Text == "")
+            if (t2.Text == "" && !isPreview)
             {
                 MessageBox.Show("거래처가 입력되지 않았습니다.");
-                return false;
+                return null;
             }
             ExtractOrder();
             string[][] extractItem = sheetControl.ExtractItemArray();
@@ -230,55 +309,43 @@ namespace DocV2
             }
             try
             {
-                docID = SQLiteWrapper.AddDoc(formName,docID, new string[] { configDataString, t1.Text, t2.Text, t3.Text, t4.Text }, extractItem);
-                if (formName == "견적서")
-                    exportPDF.Save(formName,docID, headerInfo, columnWidths, extractItem, sheetControl.SumValues(), sheetControl.TotalString());
-                else if (formName == "거래명세서")
-                    exportPDF.Save(formName,docID, headerInfo, columnWidths, extractItem, sheetControl.SumValues(), sheetControl.TotalString());
-                this.Text = docID;
-                AutoClosingMessageBox.Show("저장되었습니다.", formName, 1000);
-                sheetControl.isModified = false;
-                return true;
+                string saveKey = docID;
+                if (!isPreview)
+                    saveKey = SQLiteWrapper.AddDoc(formName, saveKey, new string[] { configDataString, t1.Text, t2.Text, t3.Text, t4.Text }, extractItem);
+                else
+                    saveKey = "tmp";
+                var fullPath = exportPDF.Save(saveKey, headerInfo, columnWidths, extractItem, sheetControl.SumValues(), sheetControl.TotalString());
+                if (!isPreview)
+                {
+                    docID = saveKey;
+                    this.Text = docID;
+                    AutoClosingMessageBox.Show("저장되었습니다.", formName, 1000);
+                    sheetControl.isModified = false;
+                }
+                CompanyDropDownRefresh();
+                return fullPath;
             }
             catch
             {
                 MessageBox.Show("저장이 실패하였습니다.");
-                return false;
+                return null;
             }
         }
 
-        private void b2_Click(object sender, EventArgs e)
-        {
-            if (!loadDoc.Visible)
-                loadDoc.Show();
-        }
-
-        private void b1_Click(object sender, EventArgs e)
-        {
-            var process = Process.GetCurrentProcess(); // Or whatever method you are using
-            string fullPath = process.MainModule.FileName;
-            Process.Start(fullPath, formName);
-        }
 
         private void DocForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!SaveQuestion("저장 후 종료하시겠습니까?"))
+            if (!SaveQuestion())
             {
                 e.Cancel = true;
             }
-        }
-
-        private void loadCompanyBtn_Click(object sender, EventArgs e)
-        {
-            if (!loadCompany.Visible)
-                loadCompany.Show();
         }
 
         private void UserField_DoubleClick(object sender, EventArgs e)
         {
             Label label = ((Label)sender);
             string title = "";
-            string text = "";
+            string text = label.Text;
             switch (label.Name)
             {
                 case "s1":title = "등록번호";break;
@@ -301,17 +368,18 @@ namespace DocV2
 
         private static DialogResult ShowInputDialog(string title,ref string input)
         {
-            System.Drawing.Size size = new System.Drawing.Size(200, 70);
+            System.Drawing.Size size = new System.Drawing.Size(400, 70);
             Form inputBox = new Form();
             inputBox.MinimizeBox = false;
             inputBox.MaximizeBox = false;
+            inputBox.StartPosition = FormStartPosition.CenterScreen;
             inputBox.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             inputBox.ClientSize = size;
             inputBox.Text = title;
 
             System.Windows.Forms.TextBox textBox = new TextBox();
             textBox.Size = new System.Drawing.Size(size.Width - 10, 23);
-            textBox.Location = new System.Drawing.Point(5, 5);
+            textBox.Location = new Point(5,5);
             textBox.Text = input;
             inputBox.Controls.Add(textBox);
 
@@ -339,5 +407,119 @@ namespace DocV2
             return result;
         }
 
+        internal string ReadToday()
+        {
+            string[] stn = t1.Text.Split('-');
+            return stn[1] + "." + stn[2];
+        }
+
+
+        private void systemFontDropdown_TextChanged(object sender, EventArgs e)
+        {
+            ToolStripComboBox dropdown = (ToolStripComboBox)sender;
+            if (dropdown.Items.Contains(dropdown.Text)){
+                Properties.Settings.Default["SystemFontName"] = dropdown.Text;
+                Properties.Settings.Default.Save();
+                SystemFontChange();
+            }
+        }
+        void SystemFontChange()
+        {
+            systemFontDropdown.Text = Properties.Settings.Default["SystemFontName"].ToString();
+            SystemFontModifySub(Properties.Settings.Default["SystemFontName"].ToString(),this);
+        }
+        void SystemFontModifySub(string fontName,Control control)
+        {
+            if (control.Controls.Count == 0)
+            {
+                if (control is ToolStrip)
+                {
+                    for (int i = 0; i < ((ToolStrip)control).Items.Count; i++) { 
+                        ((ToolStrip)control).Items[i].Font = new Font(fontName, ((ToolStrip)control).Items[i].Font.Size);
+                    }
+                }
+                else
+                {
+                    control.Font = new Font(fontName, control.Font.Size);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < control.Controls.Count; i++)
+                {
+                    SystemFontModifySub(fontName,control.Controls[i]);
+                }
+            }
+        }
+
+        private void printDocBtn_Click(object sender, EventArgs e)
+        {
+            
+            //SaveDoc();
+            //fullPath
+            string fullPath = SaveDoc(true);
+            if (fullPath == null)
+                return;
+            PdfDocument pdfDoc = PdfDocument.Load(fullPath);
+            PrintDocument pd = pdfDoc.CreatePrintDocument();
+            PrintDialog dialog = new PrintDialog();
+            dialog.PrinterSettings = pd.PrinterSettings;
+            DialogResult result = dialog.ShowDialog();
+            if (result.Equals(DialogResult.OK))
+            {
+                //pd.DocumentName = "fileName";
+                pd.PrinterSettings = dialog.PrinterSettings;
+                //pd.PrinterSettings.PrintFileName = fullPath;
+                pd.Print();
+            }
+            pdfDoc.Dispose();
+            dialog.Dispose();
+            pd.Dispose();
+        }
+
+        private void DocForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.S)
+                SaveDoc();
+        }
+
+        private void StampMenu_Click(object sender, EventArgs e)
+        {
+            /*
+            StampView sv = new StampView();
+            sv.Controls.
+            new StampView().ShowDialog();
+
+            
+            Form stampForm = new Form();
+            stampForm.Size = new Size(250, 290);
+            Button imgBtn = new Button();
+            imgBtn.Image = Image.FromFile(@"D:\D_DEVELOP\Develop\PP.JPG");
+            imgBtn.Dock = DockStyle.Fill;
+            Panel panel = new Panel();
+            panel.Height = 40;
+            panel.Dock = DockStyle.Bottom;
+            Button modifBtn = new Button();
+            modifBtn.Text = "변경";
+            modifBtn.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            modifBtn.Dock = DockStyle.Left;
+            Button removeBtn = new Button();
+            removeBtn.Text = "제거";
+            removeBtn.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            removeBtn.Dock = DockStyle.Right;
+            panel.Controls.Add(modifBtn);
+            panel.Controls.Add(removeBtn);
+
+            stampForm.Controls.Add(imgBtn);
+            stampForm.Controls.Add(panel);
+            stampForm.ShowDialog();
+            */
+
+        }
+
+        private void 설정초기화ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

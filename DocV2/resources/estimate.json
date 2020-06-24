@@ -1,16 +1,6 @@
-[{
+{
 	"Form" : "견적서",
 	"MaxRow":100,
-	"Supply" : {
-	  "등록번호":"101-01-00000",
-	  "상호":"태성정밀",
-	  "성명":"하태일",
-	  "주소":"인천시 남동구 남촌동",
-	  "업태":"업태",
-	  "종목":"종목",
-	  "전화":"전화",
-	  "팩스":"070-0000-0000"
-	},
 	"Orderer":[
 		"견적일",
 		"상 호",
@@ -20,33 +10,33 @@
 	"Column":[
 		{
 			"Name":"품목명",
-			"Width":160
+			"Width":16
 		},
 		{
 			"Name":"규격",
-			"Width":120
+			"Width":12
 		},
 		{
 			"Name":"자재비",
-			"Width":80,
+			"Width":9,
 			"Format":"Currency",
 			"Align":"Right"
 		},
 		{
 			"Name":"가공비",
-			"Width":80,
+			"Width":9,
 			"Format":"Currency",
 			"Align":"Right"
 		},
 		{
 			"Name":"수량",
-			"Width":40,
+			"Width":5,
 			"Format":"Number",
 			"Align":"Mid"
 		},
 		{
 			"Name":"단가",
-			"Width":80,
+			"Width":9,
 			"Format":"Currency",
 			"Calc":"=('자재비'+'가공비')",
 			"ReadOnly":true,
@@ -54,7 +44,7 @@
 		},
 		{
 			"Name":"공급가액",
-			"Width":100,
+			"Width":11,
 			"Format":"Currency",
 			"Calc":"='단가'*'수량'",
 			"ReadOnly":true,
@@ -66,4 +56,4 @@
 			"Name":"비고"
 		}
 	]
-}]
+}

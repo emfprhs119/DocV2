@@ -130,5 +130,161 @@ namespace DocV2.Properties {
                 this["s8"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1200")]
+        public string Width {
+            get {
+                return ((string)(this["Width"]));
+            }
+            set {
+                this["Width"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("600")]
+        public string Height {
+            get {
+                return ((string)(this["Height"]));
+            }
+            set {
+                this["Height"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("맑은 고딕")]
+        public string SystemFontName {
+            get {
+                return ((string)(this["SystemFontName"]));
+            }
+            set {
+                this["SystemFontName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("맑은 고딕")]
+        public string SheetFontName {
+            get {
+                return ((string)(this["SheetFontName"]));
+            }
+            set {
+                this["SheetFontName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("9")]
+        public string SheetFontSize {
+            get {
+                return ((string)(this["SheetFontSize"]));
+            }
+            set {
+                this["SheetFontSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Malgun Gothic")]
+        public string 견적서ExportHeaderFontName {
+            get {
+                return ((string)(this["견적서ExportHeaderFontName"]));
+            }
+            set {
+                this["견적서ExportHeaderFontName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("9")]
+        public string 견적서ExportHeaderFontSize {
+            get {
+                return ((string)(this["견적서ExportHeaderFontSize"]));
+            }
+            set {
+                this["견적서ExportHeaderFontSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Malgun Gothic")]
+        public string 거래명세서ExportHeaderFontName {
+            get {
+                return ((string)(this["거래명세서ExportHeaderFontName"]));
+            }
+            set {
+                this["거래명세서ExportHeaderFontName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("9")]
+        public string 거래명세서ExportHeaderFontSize {
+            get {
+                return ((string)(this["거래명세서ExportHeaderFontSize"]));
+            }
+            set {
+                this["거래명세서ExportHeaderFontSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Malgun Gothic")]
+        public string 견적서ExportTableFontName {
+            get {
+                return ((string)(this["견적서ExportTableFontName"]));
+            }
+            set {
+                this["견적서ExportTableFontName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("9")]
+        public string 견적서ExportTableFontSize {
+            get {
+                return ((string)(this["견적서ExportTableFontSize"]));
+            }
+            set {
+                this["견적서ExportTableFontSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Malgun Gothic")]
+        public string 거래명세서ExportTableFontName {
+            get {
+                return ((string)(this["거래명세서ExportTableFontName"]));
+            }
+            set {
+                this["거래명세서ExportTableFontName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("9")]
+        public string 거래명세서ExportTableFontSize {
+            get {
+                return ((string)(this["거래명세서ExportTableFontSize"]));
+            }
+            set {
+                this["거래명세서ExportTableFontSize"] = value;
+            }
+        }
     }
 }

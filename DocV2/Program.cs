@@ -13,7 +13,6 @@ namespace DocV2
         {
             if (args.Length == 0)
                 args = new string[] {"견적서" };
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new DocForm(args[0]));

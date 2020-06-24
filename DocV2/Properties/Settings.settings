@@ -29,5 +29,44 @@
     <Setting Name="s8" Type="System.String" Scope="User">
       <Value Profile="(Default)">입력 (더블 클릭)</Value>
     </Setting>
+    <Setting Name="Width" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1200</Value>
+    </Setting>
+    <Setting Name="Height" Type="System.String" Scope="User">
+      <Value Profile="(Default)">600</Value>
+    </Setting>
+    <Setting Name="SystemFontName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">맑은 고딕</Value>
+    </Setting>
+    <Setting Name="SheetFontName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">맑은 고딕</Value>
+    </Setting>
+    <Setting Name="SheetFontSize" Type="System.String" Scope="User">
+      <Value Profile="(Default)">9</Value>
+    </Setting>
+    <Setting Name="견적서ExportHeaderFontName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Malgun Gothic</Value>
+    </Setting>
+    <Setting Name="견적서ExportHeaderFontSize" Type="System.String" Scope="User">
+      <Value Profile="(Default)">9</Value>
+    </Setting>
+    <Setting Name="거래명세서ExportHeaderFontName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Malgun Gothic</Value>
+    </Setting>
+    <Setting Name="거래명세서ExportHeaderFontSize" Type="System.String" Scope="User">
+      <Value Profile="(Default)">9</Value>
+    </Setting>
+    <Setting Name="견적서ExportTableFontName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Malgun Gothic</Value>
+    </Setting>
+    <Setting Name="견적서ExportTableFontSize" Type="System.String" Scope="User">
+      <Value Profile="(Default)">9</Value>
+    </Setting>
+    <Setting Name="거래명세서ExportTableFontName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Malgun Gothic</Value>
+    </Setting>
+    <Setting Name="거래명세서ExportTableFontSize" Type="System.String" Scope="User">
+      <Value Profile="(Default)">9</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
