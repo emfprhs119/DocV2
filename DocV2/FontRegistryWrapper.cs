@@ -30,20 +30,27 @@ namespace DocV2
         }
         public static bool IsSupportKorean(String fontName)
         {
-            var families = System.Windows.Media.Fonts.GetFontFamilies(@"C:\Windows\Fonts\" + fontName);
-            foreach (System.Windows.Media.FontFamily family in families)
+            try
             {
-                var typefaces = family.GetTypefaces();
-                foreach (System.Windows.Media.Typeface typeface in typefaces)
+                var families = System.Windows.Media.Fonts.GetFontFamilies(@"C:\Windows\Fonts\" + fontName);
+                foreach (System.Windows.Media.FontFamily family in families)
                 {
-                    System.Windows.Media.GlyphTypeface glyph;
-                    typeface.TryGetGlyphTypeface(out glyph);
-                    IDictionary<int, ushort> characterMap = glyph.CharacterToGlyphMap;
-                    if (characterMap.ContainsKey(Char.Parse("가")))
-                        return true;
-                    else
-                        return false;
+                    var typefaces = family.GetTypefaces();
+                    foreach (System.Windows.Media.Typeface typeface in typefaces)
+                    {
+                        System.Windows.Media.GlyphTypeface glyph;
+                        typeface.TryGetGlyphTypeface(out glyph);
+                        IDictionary<int, ushort> characterMap = glyph.CharacterToGlyphMap;
+                        if (characterMap.ContainsKey(Char.Parse("가")))
+                            return true;
+                        else
+                            return false;
+                    }
                 }
+            }
+            catch (Exception)
+            {
+                return false;
             }
             return false;
         }
