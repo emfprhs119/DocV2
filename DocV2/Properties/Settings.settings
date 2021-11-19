@@ -68,5 +68,8 @@
     <Setting Name="거래명세서ExportTableFontSize" Type="System.String" Scope="User">
       <Value Profile="(Default)">9</Value>
     </Setting>
+    <Setting Name="ToolbarEnabled" Type="System.String" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

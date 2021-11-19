@@ -28,7 +28,7 @@ namespace DocV2
             switch (viewType)
             {
                 case ViewType.DOC:
-                    Width = 320;
+                    Width = 390;
                     Height = 600;
                     sheetControl.SetSelectionMode(unvell.ReoGrid.WorksheetSelectionMode.SingleRow);
                     reoGrid.DoubleClick += button1_Click;

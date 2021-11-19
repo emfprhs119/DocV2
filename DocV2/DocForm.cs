@@ -31,7 +31,7 @@ namespace DocV2
 
             FontRegistryWrapper.ReadRegistry();
             InitializeComponent();
-            MinimumSize = new System.Drawing.Size(800, 600);
+            //MinimumSize = new System.Drawing.Size(884, 600);
             formName = arg;
             if (arg == "견적서")
                 configFileName = @"resources\estimate.json";
@@ -100,12 +100,16 @@ namespace DocV2
             if (formName == "거래명세서")
             {
                 int topMargin = 65;
-                panel4.Top += topMargin;
-                panel4.Height -= topMargin;
-                label23.Top -= topMargin;
-                label24.Top -= topMargin;
+                //panel4.Top += topMargin;
+                //panel4.Height -= topMargin;
+                //label23.Top -= topMargin;
+                //label24.Top -= topMargin;
             }
-            
+            Title.Text = formName;
+            Title.Left = Width / 2 - Title.Width / 2;
+            툴바ToolStripMenuItem.Checked = Boolean.Parse(Properties.Settings.Default["ToolbarEnabled"].ToString());
+            toolStrip1.Visible = 툴바ToolStripMenuItem.Checked;
+            label24.Top = (label23.Top + label23.Height / 2) - (label24.Height / 2);
             foreach (FontFamily font in System.Drawing.FontFamily.Families)
             {
                 systemFontDropdown.Items.Add(font.Name);
@@ -121,7 +125,7 @@ namespace DocV2
         }
         private void InitFunc()
         {
-            newDocBtn.Click += (object sender, EventArgs e) =>
+            void newDocFunc(object sender, EventArgs e)
             {
                 if (!SaveQuestion())
                     return;
@@ -132,39 +136,76 @@ namespace DocV2
                 t4.Text = "";
                 this.Text = formName;
                 sheetControl.isModified = false;
-            };
-            테이블폰트ToolStripMenuItem.Click += (object sender, EventArgs e) =>
-             {
-                 FontDialog dialog = new FontDialog();
-                 dialog.Font = new Font(Properties.Settings.Default["SheetFontName"].ToString(), float.Parse(Properties.Settings.Default["SheetFontSize"].ToString()));
-                 DialogResult result = dialog.ShowDialog();
-                 if (result.Equals(DialogResult.OK))
-                 {
-                     sheetControl.SheetFontChange(dialog.Font);
-                 }
-             };
-            loadDocBtn.Click += (object sender, EventArgs e) =>
+            }
+            void loadDocFunc(object sender, EventArgs e)
             {
                 if (!loadDocView.Visible)
                     loadDocView.Show();
             };
-            searchDocBtn.Click += (object sender, EventArgs e) =>
+            void searchDocBtnFunc(object sender, EventArgs e)
             {
                 if (!searchView.Visible)
                     searchView.Show();
             };
-            saveDocBtn.Click += (object sender, EventArgs e) =>
+            void saveDocFunc(object sender, EventArgs e)
             {
                 SaveDoc();
             };
-            previewBtn.Click += (object sender, EventArgs e) =>
+            void previewFunc(object sender, EventArgs e)
             {
                 pdfView.Show(true);
+            };
+            void printDocFunc(object sender, EventArgs e)
+            {
+
+                //SaveDoc();
+                //fullPath
+                string fullPath = SaveDoc(true);
+                if (fullPath == null)
+                    return;
+                PdfDocument pdfDoc = PdfDocument.Load(fullPath);
+                PrintDocument pd = pdfDoc.CreatePrintDocument();
+                PrintDialog dialog = new PrintDialog();
+                dialog.PrinterSettings = pd.PrinterSettings;
+                DialogResult result = dialog.ShowDialog();
+                if (result.Equals(DialogResult.OK))
+                {
+                    //pd.DocumentName = "fileName";
+                    pd.PrinterSettings = dialog.PrinterSettings;
+                    //pd.PrinterSettings.PrintFileName = fullPath;
+                    pd.Print();
+                }
+                pdfDoc.Dispose();
+                dialog.Dispose();
+                pd.Dispose();
+            }
+            테이블폰트ToolStripMenuItem.Click += (object sender, EventArgs e) =>
+            {
+                FontDialog dialog = new FontDialog();
+                dialog.Font = new Font(Properties.Settings.Default["SheetFontName"].ToString(), float.Parse(Properties.Settings.Default["SheetFontSize"].ToString()));
+                DialogResult result = dialog.ShowDialog();
+                if (result.Equals(DialogResult.OK))
+                {
+                    sheetControl.SheetFontChange(dialog.Font);
+                }
             };
             출력폰트ToolStripMenuItem.Click += (object sender, EventArgs e) =>
             {
                 pdfView.Show(false);
             };
+
+            newDocBtn.Click += newDocFunc;
+            새문서ToolStripMenuItem.Click += newDocFunc;
+            loadDocBtn.Click += loadDocFunc;
+            불러오기ToolStripMenuItem.Click += loadDocFunc;
+            searchDocBtn.Click += searchDocBtnFunc;
+            검색하기ToolStripMenuItem.Click += searchDocBtnFunc;
+            saveDocBtn.Click += saveDocFunc;
+            저장하기ToolStripMenuItem.Click += saveDocFunc;
+            previewBtn.Click += previewFunc;
+            미리보기ToolStripMenuItem.Click += previewFunc;
+            printDocBtn.Click += printDocFunc;
+            인쇄하기ToolStripMenuItem.Click += printDocFunc;
         }
 
         private bool SaveQuestion()
@@ -264,6 +305,11 @@ namespace DocV2
             }
             if (i == 2)
             {
+                t1.Location = new Point(t1.Location.X, t1.Location.Y + 5);
+                o1.Location = new Point(o1.Location.X, (t1.Location.Y + t1.Height / 2) - (o1.Height / 2));
+                t2.Location = new Point(t2.Location.X, t2.Location.Y + 15);
+                o2.Location = new Point(o2.Location.X, (t2.Location.Y + t2.Height / 2) - (o2.Height / 2));
+
                 o3.Visible = false;
                 t3.Visible = false;
                 o4.Visible = false;
@@ -280,7 +326,12 @@ namespace DocV2
         private void DocForm_Resize(object sender, EventArgs e)
         {
             var scale = (float)(this.Width) / formWidth;
-            sheetControl.FormResize(scale);
+            reoGridPanel.Height = this.Height- (label23.Bottom+38);
+            if (formWidth == 0)
+                scale = 1;
+            if (sheetControl != null) {
+                sheetControl.FormResize(scale);
+            }
             formWidth = this.Width;
             Properties.Settings.Default["Width"] = this.Width.ToString();
             Properties.Settings.Default["Height"] = this.Height.ToString();
@@ -425,7 +476,7 @@ namespace DocV2
         }
         void SystemFontChange()
         {
-            systemFontDropdown.Text = Properties.Settings.Default["SystemFontName"].ToString();
+            //systemFontDropdown.Text = Properties.Settings.Default["SystemFontName"].ToString();
             SystemFontModifySub(Properties.Settings.Default["SystemFontName"].ToString(),this);
         }
         void SystemFontModifySub(string fontName,Control control)
@@ -450,31 +501,6 @@ namespace DocV2
                     SystemFontModifySub(fontName,control.Controls[i]);
                 }
             }
-        }
-
-        private void printDocBtn_Click(object sender, EventArgs e)
-        {
-            
-            //SaveDoc();
-            //fullPath
-            string fullPath = SaveDoc(true);
-            if (fullPath == null)
-                return;
-            PdfDocument pdfDoc = PdfDocument.Load(fullPath);
-            PrintDocument pd = pdfDoc.CreatePrintDocument();
-            PrintDialog dialog = new PrintDialog();
-            dialog.PrinterSettings = pd.PrinterSettings;
-            DialogResult result = dialog.ShowDialog();
-            if (result.Equals(DialogResult.OK))
-            {
-                //pd.DocumentName = "fileName";
-                pd.PrinterSettings = dialog.PrinterSettings;
-                //pd.PrinterSettings.PrintFileName = fullPath;
-                pd.Print();
-            }
-            pdfDoc.Dispose();
-            dialog.Dispose();
-            pd.Dispose();
         }
 
         private void DocForm_KeyDown(object sender, KeyEventArgs e)
@@ -520,6 +546,12 @@ namespace DocV2
         private void 설정초기화ToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void 툴바ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            툴바ToolStripMenuItem.Checked = !툴바ToolStripMenuItem.Checked;
+            toolStrip1.Visible = 툴바ToolStripMenuItem.Checked;
         }
     }
 }

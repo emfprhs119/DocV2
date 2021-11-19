@@ -55,7 +55,7 @@ namespace DocV2
             document.Add(img);
             if (page == 0 && stampImage != null)
             {
-                stampImage.ScaleAbsolute(30f, 30f);
+                stampImage.ScaleToFit(30f, 30f);
                 stampImage.SetAbsolutePosition(document.PageSize.Width - 72, document.PageSize.Height / 4 * 3 + 110);
                 document.Add(stampImage);
             }

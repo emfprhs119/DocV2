@@ -12,7 +12,7 @@ namespace DocV2
         static void Main(string[] args)
         {
             if (args.Length == 0)
-                args = new string[] {"견적서" };
+                args = new string[] { "거래명세서" }; // 견적서, 거래명세서
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new DocForm(args[0]));
