@@ -102,6 +102,8 @@
             this.systemFontDropdown = new System.Windows.Forms.ToolStripComboBox();
             this.테이블폰트ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.출력폰트ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.설정ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.경로초기화ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel6.SuspendLayout();
             this.panel2.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -148,8 +150,9 @@
             this.saveDocBtn.Image = ((System.Drawing.Image)(resources.GetObject("saveDocBtn.Image")));
             this.saveDocBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveDocBtn.Name = "saveDocBtn";
-            this.saveDocBtn.Size = new System.Drawing.Size(69, 23);
-            this.saveDocBtn.Text = "저장하기";
+            this.saveDocBtn.Size = new System.Drawing.Size(94, 23);
+            this.saveDocBtn.Text = "PDF저장하기";
+            this.saveDocBtn.ToolTipText = "저장하기";
             // 
             // toolStripSeparator4
             // 
@@ -663,7 +666,8 @@
             this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(0);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.파일ToolStripMenuItem,
-            this.보기ToolStripMenuItem});
+            this.보기ToolStripMenuItem,
+            this.설정ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(0);
@@ -700,7 +704,7 @@
             // 
             this.저장하기ToolStripMenuItem.Name = "저장하기ToolStripMenuItem";
             this.저장하기ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.저장하기ToolStripMenuItem.Text = "저장하기";
+            this.저장하기ToolStripMenuItem.Text = "PDF 저장하기";
             // 
             // 인쇄하기ToolStripMenuItem
             // 
@@ -727,19 +731,19 @@
             // 미리보기ToolStripMenuItem
             // 
             this.미리보기ToolStripMenuItem.Name = "미리보기ToolStripMenuItem";
-            this.미리보기ToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.미리보기ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.미리보기ToolStripMenuItem.Text = "미리보기";
             // 
             // 검색하기ToolStripMenuItem
             // 
             this.검색하기ToolStripMenuItem.Name = "검색하기ToolStripMenuItem";
-            this.검색하기ToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.검색하기ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.검색하기ToolStripMenuItem.Text = "검색하기";
             // 
             // 툴바ToolStripMenuItem
             // 
             this.툴바ToolStripMenuItem.Name = "툴바ToolStripMenuItem";
-            this.툴바ToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.툴바ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.툴바ToolStripMenuItem.Text = "툴바";
             this.툴바ToolStripMenuItem.Click += new System.EventHandler(this.툴바ToolStripMenuItem_Click);
             // 
@@ -842,6 +846,20 @@
             this.출력폰트ToolStripMenuItem.Name = "출력폰트ToolStripMenuItem";
             this.출력폰트ToolStripMenuItem.Size = new System.Drawing.Size(153, 24);
             this.출력폰트ToolStripMenuItem.Text = "출력 폰트";
+            // 
+            // 설정ToolStripMenuItem
+            // 
+            this.설정ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.경로초기화ToolStripMenuItem});
+            this.설정ToolStripMenuItem.Name = "설정ToolStripMenuItem";
+            this.설정ToolStripMenuItem.Size = new System.Drawing.Size(43, 24);
+            this.설정ToolStripMenuItem.Text = "설정";
+            // 
+            // 경로초기화ToolStripMenuItem
+            // 
+            this.경로초기화ToolStripMenuItem.Name = "경로초기화ToolStripMenuItem";
+            this.경로초기화ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.경로초기화ToolStripMenuItem.Text = "경로 초기화";
             // 
             // DocForm
             // 
@@ -954,6 +972,8 @@
         private System.Windows.Forms.ToolStripComboBox systemFontDropdown;
         private System.Windows.Forms.ToolStripMenuItem 테이블폰트ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 출력폰트ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 설정ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 경로초기화ToolStripMenuItem;
     }
 }
 

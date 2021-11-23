@@ -18,7 +18,6 @@ namespace DocV2
         static SQLiteCommand command;
         public static void PrepareDB(int itemLength)
         {
-            DialogResult dialogResult;
             var process = Process.GetCurrentProcess(); // Or whatever method you are using
             string ConnectionStringOrg = @"Data Source=filename;Version=3;";
             string fullPath = "";
@@ -34,27 +33,7 @@ namespace DocV2
 
             if (!File.Exists(fullPath))
             {
-                dialogResult = MessageBox.Show(Properties.Settings.Default.path + "\n저장 경로에 save.db 파일이 없습니다.\n저장 경로를 선택해주세요.", "데이터베이스", MessageBoxButtons.OK);
-                if (dialogResult == DialogResult.OK)
-                {
-                    FolderBrowserDialog folderBrowser = new FolderBrowserDialog
-                    {
-                        Description = "견적서 및 거래명세서 데이터를 저장할 경로를 선택하세요.",
-                        RootFolder = Environment.SpecialFolder.Desktop
-                    };
-                    dialogResult = folderBrowser.ShowDialog();
-                    if (dialogResult != DialogResult.Cancel && Properties.Settings.Default.path != folderBrowser.SelectedPath)
-                    {
-                        Properties.Settings.Default.path = folderBrowser.SelectedPath;
-                        Properties.Settings.Default.Save();
-                    }
-                    else
-                    {
-                        Application.Exit();
-                    }
-
-                }
-
+                //InitPath();
                 fullPath = Path.Combine(Properties.Settings.Default.path, dbFileName);
                 ConnectionString = ConnectionStringOrg.Replace("filename", fullPath);
                 conn = new SQLiteConnection(ConnectionString);
@@ -234,6 +213,5 @@ namespace DocV2
             }
             return tmp;
         }
-
     }
 }

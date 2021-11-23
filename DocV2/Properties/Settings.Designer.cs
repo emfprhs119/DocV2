@@ -133,7 +133,7 @@ namespace DocV2.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1200")]
+        [global::System.Configuration.DefaultSettingValueAttribute("890")]
         public string Width {
             get {
                 return ((string)(this["Width"]));
@@ -145,7 +145,7 @@ namespace DocV2.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("600")]
+        [global::System.Configuration.DefaultSettingValueAttribute("490")]
         public string Height {
             get {
                 return ((string)(this["Height"]));
@@ -205,7 +205,7 @@ namespace DocV2.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("9")]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
         public string 견적서ExportHeaderFontSize {
             get {
                 return ((string)(this["견적서ExportHeaderFontSize"]));

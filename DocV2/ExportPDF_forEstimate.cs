@@ -96,7 +96,7 @@ namespace DocV2
             // 컬럼 바탕색
             foreach (PdfPCell cell in titleCell)
             {
-                cell.FixedHeight = 24f;
+                cell.FixedHeight = 23f;
                 cell.BackgroundColor = Color.LIGHT_GRAY;
                 cell.HorizontalAlignment = Element.ALIGN_CENTER;
                 cell.VerticalAlignment = Element.ALIGN_MIDDLE;

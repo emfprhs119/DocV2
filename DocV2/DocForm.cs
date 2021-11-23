@@ -50,6 +50,7 @@ namespace DocV2
 
         private void DocForm_Load(object sender, EventArgs e)
         {
+            InitPath(false);
             InitConfig();
             InitSupply();
             InitForm();
@@ -206,6 +207,10 @@ namespace DocV2
             미리보기ToolStripMenuItem.Click += previewFunc;
             printDocBtn.Click += printDocFunc;
             인쇄하기ToolStripMenuItem.Click += printDocFunc;
+            경로초기화ToolStripMenuItem.Click += (object sender, EventArgs e) =>
+            {
+                InitPath(true);
+            };
         }
 
         private bool SaveQuestion()
@@ -303,18 +308,20 @@ namespace DocV2
                     o4.Text = orderKey.GetString();
                 i++;
             }
+
             if (i == 2)
             {
                 t1.Location = new Point(t1.Location.X, t1.Location.Y + 5);
-                o1.Location = new Point(o1.Location.X, (t1.Location.Y + t1.Height / 2) - (o1.Height / 2));
                 t2.Location = new Point(t2.Location.X, t2.Location.Y + 15);
-                o2.Location = new Point(o2.Location.X, (t2.Location.Y + t2.Height / 2) - (o2.Height / 2));
-
                 o3.Visible = false;
                 t3.Visible = false;
                 o4.Visible = false;
                 t4.Visible = false;
             }
+            o1.Location = new Point(o1.Location.X, (t1.Location.Y + t1.Height / 2) - (o1.Height / 2));
+            o2.Location = new Point(o2.Location.X, (t2.Location.Y + t2.Height / 2) - (o2.Height / 2));
+            o3.Location = new Point(o3.Location.X, (t3.Location.Y + t3.Height / 2) - (o3.Height / 2));
+            o4.Location = new Point(o4.Location.X, (t4.Location.Y + t4.Height / 2) - (o4.Height / 2));
         }
 
 
@@ -552,6 +559,35 @@ namespace DocV2
         {
             툴바ToolStripMenuItem.Checked = !툴바ToolStripMenuItem.Checked;
             toolStrip1.Visible = 툴바ToolStripMenuItem.Checked;
+        }
+
+
+        private static void InitPath(bool reset)
+        {
+            if (!reset && Properties.Settings.Default.path != "")
+            {
+                return;
+            }
+            DialogResult dialogResult;
+            dialogResult = MessageBox.Show("Data 저장 경로를 선택해주세요.", "데이터베이스", MessageBoxButtons.OK);
+            if (dialogResult == DialogResult.OK)
+            {
+                FolderBrowserDialog folderBrowser = new FolderBrowserDialog
+                {
+                    Description = "견적서 및 거래명세서 데이터를 저장할 경로를 선택하세요.",
+                    RootFolder = Environment.SpecialFolder.Desktop
+                };
+                dialogResult = folderBrowser.ShowDialog();
+                if (dialogResult != DialogResult.Cancel)
+                {
+                    Properties.Settings.Default.path = folderBrowser.SelectedPath;
+                    Properties.Settings.Default.Save();
+                }
+                else
+                {
+                    Application.Exit();
+                }
+            }
         }
     }
 }
