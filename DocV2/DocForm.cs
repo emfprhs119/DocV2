@@ -135,8 +135,10 @@ namespace DocV2
                 t2.Text = "";
                 t3.Text = "";
                 t4.Text = "";
+                docID = null;
                 this.Text = formName;
                 sheetControl.isModified = false;
+                sheetControl.Space();
             }
             void loadDocFunc(object sender, EventArgs e)
             {

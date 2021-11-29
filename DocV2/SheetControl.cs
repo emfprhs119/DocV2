@@ -452,7 +452,7 @@ namespace DocV2
             rgcs[ControlAppearanceColors.RowHeadText] = Color.Black;
             reoGrid.ControlStyle = rgcs;
             sheet = reoGrid.Worksheets[0];
-            sheet.SelectionForwardDirection = SelectionForwardDirection.Down;
+            sheet.SelectionForwardDirection = SelectionForwardDirection.Right;
             sheet.SetSettings(WorksheetSettings.Behavior_MouseWheelToZoom, false);
             sheet.SetSettings(WorksheetSettings.Behavior_DoubleClickToResizeHeader, false);
             sheet.SetSettings(WorksheetSettings.Behavior_ShortcutKeyToZoom, false);
@@ -508,7 +508,14 @@ namespace DocV2
 
         private void Sheet_SelectionRangeChanged(object sender, RangeEventArgs e)
         {
-            if (docForm.formName != "거래명세서")
+            if ((docForm.formName == "견적서" && e.Range.Col == 5) || 
+                (e.Range.Col == 6) || 
+                (docForm.formName == "거래명세서" && e.Range.Col == 7))
+            {
+                sheet.SelectRange(e.Range.Row + 1, 0, 1, 1);
+                return;
+            }
+            if (docForm.formName == "견적서")
                 return;
             if (e.Range.Cols == 1 && e.Range.Rows == 1 && e.Range.Col == 0)
             {
