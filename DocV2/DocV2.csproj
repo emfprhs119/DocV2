@@ -288,7 +288,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CefSharp.WinForms">
-      <Version>86.0.241</Version>
+      <Version>98.1.210</Version>
     </PackageReference>
     <PackageReference Include="iTextSharp-LGPL">
       <Version>4.1.6</Version>
