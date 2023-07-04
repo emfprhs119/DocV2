@@ -171,5 +171,9 @@ namespace DocV2
             return footerCell;
         }
 
+        internal override void FixTable(string[][] table, float[] widths)
+        {
+            //throw new NotImplementedException();
+        }
     }
 }

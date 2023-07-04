@@ -1,4 +1,5 @@
-﻿namespace DocV2
+﻿using unvell.ReoGrid;
+namespace DocV2
 {
     partial class DocForm
     {
@@ -93,6 +94,8 @@
             this.미리보기ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.검색하기ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.툴바ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.설정ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.경로초기화ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Title = new System.Windows.Forms.Label();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
@@ -102,8 +105,6 @@
             this.systemFontDropdown = new System.Windows.Forms.ToolStripComboBox();
             this.테이블폰트ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.출력폰트ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.설정ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.경로초기화ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel6.SuspendLayout();
             this.panel2.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -116,7 +117,7 @@
             // 
             this.newDocBtn.BackColor = System.Drawing.SystemColors.Window;
             this.newDocBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.newDocBtn.Font = new System.Drawing.Font("맑은 고딕", 10F);
+            this.newDocBtn.Font = new System.Drawing.Font("Malgun Gothic", 10F);
             this.newDocBtn.Image = ((System.Drawing.Image)(resources.GetObject("newDocBtn.Image")));
             this.newDocBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.newDocBtn.Name = "newDocBtn";
@@ -131,7 +132,7 @@
             // loadDocBtn
             // 
             this.loadDocBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.loadDocBtn.Font = new System.Drawing.Font("맑은 고딕", 10F);
+            this.loadDocBtn.Font = new System.Drawing.Font("Malgun Gothic", 10F);
             this.loadDocBtn.Image = ((System.Drawing.Image)(resources.GetObject("loadDocBtn.Image")));
             this.loadDocBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.loadDocBtn.Name = "loadDocBtn";
@@ -146,7 +147,7 @@
             // saveDocBtn
             // 
             this.saveDocBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.saveDocBtn.Font = new System.Drawing.Font("맑은 고딕", 10F);
+            this.saveDocBtn.Font = new System.Drawing.Font("Malgun Gothic", 10F);
             this.saveDocBtn.Image = ((System.Drawing.Image)(resources.GetObject("saveDocBtn.Image")));
             this.saveDocBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveDocBtn.Name = "saveDocBtn";
@@ -162,7 +163,7 @@
             // printDocBtn
             // 
             this.printDocBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.printDocBtn.Font = new System.Drawing.Font("맑은 고딕", 10F);
+            this.printDocBtn.Font = new System.Drawing.Font("Malgun Gothic", 10F);
             this.printDocBtn.Image = ((System.Drawing.Image)(resources.GetObject("printDocBtn.Image")));
             this.printDocBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.printDocBtn.Name = "printDocBtn";
@@ -177,7 +178,7 @@
             // searchDocBtn
             // 
             this.searchDocBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.searchDocBtn.Font = new System.Drawing.Font("맑은 고딕", 10F);
+            this.searchDocBtn.Font = new System.Drawing.Font("Malgun Gothic", 10F);
             this.searchDocBtn.Image = ((System.Drawing.Image)(resources.GetObject("searchDocBtn.Image")));
             this.searchDocBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.searchDocBtn.Name = "searchDocBtn";
@@ -215,11 +216,11 @@
             // 
             // t2
             // 
-            this.t2.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.t2.Font = new System.Drawing.Font("Malgun Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.t2.FormattingEnabled = true;
             this.t2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.t2.IntegralHeight = false;
-            this.t2.Location = new System.Drawing.Point(116, 40);
+            this.t2.Location = new System.Drawing.Point(116, 80);
             this.t2.MaxDropDownItems = 5;
             this.t2.Name = "t2";
             this.t2.Size = new System.Drawing.Size(222, 29);
@@ -229,8 +230,8 @@
             // o1
             // 
             this.o1.BackColor = System.Drawing.SystemColors.Window;
-            this.o1.Font = new System.Drawing.Font("나눔고딕", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.o1.Location = new System.Drawing.Point(5, 6);
+            this.o1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.o1.Location = new System.Drawing.Point(3, 40);
             this.o1.Name = "o1";
             this.o1.Size = new System.Drawing.Size(106, 32);
             this.o1.TabIndex = 2;
@@ -240,25 +241,26 @@
             // t3
             // 
             this.t3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.t3.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.t3.Location = new System.Drawing.Point(116, 75);
+            this.t3.Font = new System.Drawing.Font("Malgun Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.t3.Location = new System.Drawing.Point(116, 10);
             this.t3.Name = "t3";
             this.t3.Size = new System.Drawing.Size(222, 29);
             this.t3.TabIndex = 7;
+            this.t3.Visible = false;
             // 
             // t1
             // 
-            this.t1.CalendarFont = new System.Drawing.Font("맑은 고딕", 12F);
-            this.t1.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.t1.CalendarFont = new System.Drawing.Font("Malgun Gothic", 12F);
+            this.t1.Font = new System.Drawing.Font("Malgun Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.t1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.t1.Location = new System.Drawing.Point(116, 6);
+            this.t1.Location = new System.Drawing.Point(116, 45);
             this.t1.Name = "t1";
             this.t1.Size = new System.Drawing.Size(222, 29);
             this.t1.TabIndex = 0;
             // 
             // o4
             // 
-            this.o4.Font = new System.Drawing.Font("나눔고딕", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.o4.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.o4.Location = new System.Drawing.Point(5, 110);
             this.o4.Name = "o4";
             this.o4.Size = new System.Drawing.Size(106, 32);
@@ -269,16 +271,16 @@
             // t4
             // 
             this.t4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.t4.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.t4.Location = new System.Drawing.Point(116, 110);
+            this.t4.Font = new System.Drawing.Font("Malgun Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.t4.Location = new System.Drawing.Point(116, 115);
             this.t4.Name = "t4";
             this.t4.Size = new System.Drawing.Size(222, 29);
             this.t4.TabIndex = 8;
             // 
             // o2
             // 
-            this.o2.Font = new System.Drawing.Font("나눔고딕", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.o2.Location = new System.Drawing.Point(5, 37);
+            this.o2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.o2.Location = new System.Drawing.Point(4, 76);
             this.o2.Name = "o2";
             this.o2.Size = new System.Drawing.Size(106, 32);
             this.o2.TabIndex = 3;
@@ -287,17 +289,18 @@
             // 
             // o3
             // 
-            this.o3.Font = new System.Drawing.Font("나눔고딕", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.o3.Location = new System.Drawing.Point(5, 72);
+            this.o3.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.o3.Location = new System.Drawing.Point(5, 8);
             this.o3.Name = "o3";
             this.o3.Size = new System.Drawing.Size(106, 32);
             this.o3.TabIndex = 4;
-            this.o3.Text = "전화번호";
+            this.o3.Text = "번호";
             this.o3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.o3.Visible = false;
             // 
             // label24
             // 
-            this.label24.Font = new System.Drawing.Font("나눔고딕", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label24.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label24.Location = new System.Drawing.Point(-3, 285);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(136, 32);
@@ -309,7 +312,7 @@
             // 
             this.label23.BackColor = System.Drawing.SystemColors.Info;
             this.label23.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label23.Font = new System.Drawing.Font("나눔고딕 ExtraBold", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label23.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label23.Location = new System.Drawing.Point(128, 282);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(356, 40);
@@ -346,7 +349,7 @@
             // 
             this.s8.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.s8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.s8.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.s8.Font = new System.Drawing.Font("Malgun Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.s8.Location = new System.Drawing.Point(272, 160);
             this.s8.Margin = new System.Windows.Forms.Padding(0);
             this.s8.Name = "s8";
@@ -360,7 +363,7 @@
             // 
             this.s6.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.s6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.s6.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.s6.Font = new System.Drawing.Font("Malgun Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.s6.Location = new System.Drawing.Point(272, 121);
             this.s6.Margin = new System.Windows.Forms.Padding(0);
             this.s6.Name = "s6";
@@ -374,7 +377,7 @@
             // 
             this.s3.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.s3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.s3.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.s3.Font = new System.Drawing.Font("Malgun Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.s3.Location = new System.Drawing.Point(272, 43);
             this.s3.Margin = new System.Windows.Forms.Padding(0);
             this.s3.Name = "s3";
@@ -388,7 +391,7 @@
             // 
             this.s7.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.s7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.s7.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.s7.Font = new System.Drawing.Font("Malgun Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.s7.Location = new System.Drawing.Point(79, 160);
             this.s7.Margin = new System.Windows.Forms.Padding(0);
             this.s7.Name = "s7";
@@ -402,7 +405,7 @@
             // 
             this.s5.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.s5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.s5.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.s5.Font = new System.Drawing.Font("Malgun Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.s5.Location = new System.Drawing.Point(79, 121);
             this.s5.Margin = new System.Windows.Forms.Padding(0);
             this.s5.Name = "s5";
@@ -416,7 +419,7 @@
             // 
             this.s4.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.s4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.s4.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.s4.Font = new System.Drawing.Font("Malgun Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.s4.Location = new System.Drawing.Point(79, 82);
             this.s4.Margin = new System.Windows.Forms.Padding(0);
             this.s4.Name = "s4";
@@ -430,7 +433,7 @@
             // 
             this.s2.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.s2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.s2.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.s2.Font = new System.Drawing.Font("Malgun Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.s2.Location = new System.Drawing.Point(79, 43);
             this.s2.Margin = new System.Windows.Forms.Padding(0);
             this.s2.Name = "s2";
@@ -444,7 +447,7 @@
             // 
             this.s1.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.s1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.s1.Font = new System.Drawing.Font("맑은 고딕", 15F);
+            this.s1.Font = new System.Drawing.Font("Malgun Gothic", 15F);
             this.s1.Location = new System.Drawing.Point(79, 4);
             this.s1.Margin = new System.Windows.Forms.Padding(0);
             this.s1.Name = "s1";
@@ -458,7 +461,7 @@
             // 
             this.label12.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.label12.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label12.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label12.Font = new System.Drawing.Font("Malgun Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label12.Location = new System.Drawing.Point(228, 160);
             this.label12.Margin = new System.Windows.Forms.Padding(0);
             this.label12.Name = "label12";
@@ -471,7 +474,7 @@
             // 
             this.label13.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.label13.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label13.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label13.Font = new System.Drawing.Font("Malgun Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label13.Location = new System.Drawing.Point(228, 121);
             this.label13.Margin = new System.Windows.Forms.Padding(0);
             this.label13.Name = "label13";
@@ -484,7 +487,7 @@
             // 
             this.label14.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.label14.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label14.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label14.Font = new System.Drawing.Font("Malgun Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label14.Location = new System.Drawing.Point(228, 43);
             this.label14.Margin = new System.Windows.Forms.Padding(0);
             this.label14.Name = "label14";
@@ -497,7 +500,7 @@
             // 
             this.label11.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.label11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label11.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label11.Font = new System.Drawing.Font("Malgun Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label11.Location = new System.Drawing.Point(35, 160);
             this.label11.Margin = new System.Windows.Forms.Padding(0);
             this.label11.Name = "label11";
@@ -510,7 +513,7 @@
             // 
             this.label10.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.label10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label10.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label10.Font = new System.Drawing.Font("Malgun Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label10.Location = new System.Drawing.Point(35, 121);
             this.label10.Margin = new System.Windows.Forms.Padding(0);
             this.label10.Name = "label10";
@@ -523,7 +526,7 @@
             // 
             this.label9.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.label9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label9.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label9.Font = new System.Drawing.Font("Malgun Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label9.Location = new System.Drawing.Point(35, 82);
             this.label9.Margin = new System.Windows.Forms.Padding(0);
             this.label9.Name = "label9";
@@ -536,7 +539,7 @@
             // 
             this.label8.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.label8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label8.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label8.Font = new System.Drawing.Font("Malgun Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label8.Location = new System.Drawing.Point(35, 43);
             this.label8.Margin = new System.Windows.Forms.Padding(0);
             this.label8.Name = "label8";
@@ -549,7 +552,7 @@
             // 
             this.label7.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.label7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label7.Font = new System.Drawing.Font("맑은 고딕", 10F);
+            this.label7.Font = new System.Drawing.Font("Malgun Gothic", 10F);
             this.label7.Location = new System.Drawing.Point(35, 4);
             this.label7.Margin = new System.Windows.Forms.Padding(0);
             this.label7.Name = "label7";
@@ -691,31 +694,31 @@
             // 새문서ToolStripMenuItem
             // 
             this.새문서ToolStripMenuItem.Name = "새문서ToolStripMenuItem";
-            this.새문서ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.새문서ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.새문서ToolStripMenuItem.Text = "새 문서";
             // 
             // 불러오기ToolStripMenuItem
             // 
             this.불러오기ToolStripMenuItem.Name = "불러오기ToolStripMenuItem";
-            this.불러오기ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.불러오기ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.불러오기ToolStripMenuItem.Text = "불러오기";
             // 
             // 저장하기ToolStripMenuItem
             // 
             this.저장하기ToolStripMenuItem.Name = "저장하기ToolStripMenuItem";
-            this.저장하기ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.저장하기ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.저장하기ToolStripMenuItem.Text = "PDF 저장하기";
             // 
             // 인쇄하기ToolStripMenuItem
             // 
             this.인쇄하기ToolStripMenuItem.Name = "인쇄하기ToolStripMenuItem";
-            this.인쇄하기ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.인쇄하기ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.인쇄하기ToolStripMenuItem.Text = "인쇄하기";
             // 
             // 끝내기ToolStripMenuItem
             // 
             this.끝내기ToolStripMenuItem.Name = "끝내기ToolStripMenuItem";
-            this.끝내기ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.끝내기ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.끝내기ToolStripMenuItem.Text = "끝내기";
             // 
             // 보기ToolStripMenuItem
@@ -731,29 +734,43 @@
             // 미리보기ToolStripMenuItem
             // 
             this.미리보기ToolStripMenuItem.Name = "미리보기ToolStripMenuItem";
-            this.미리보기ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.미리보기ToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.미리보기ToolStripMenuItem.Text = "미리보기";
             // 
             // 검색하기ToolStripMenuItem
             // 
             this.검색하기ToolStripMenuItem.Name = "검색하기ToolStripMenuItem";
-            this.검색하기ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.검색하기ToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.검색하기ToolStripMenuItem.Text = "검색하기";
             // 
             // 툴바ToolStripMenuItem
             // 
             this.툴바ToolStripMenuItem.Name = "툴바ToolStripMenuItem";
-            this.툴바ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.툴바ToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.툴바ToolStripMenuItem.Text = "툴바";
             this.툴바ToolStripMenuItem.Click += new System.EventHandler(this.툴바ToolStripMenuItem_Click);
+            // 
+            // 설정ToolStripMenuItem
+            // 
+            this.설정ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.경로초기화ToolStripMenuItem});
+            this.설정ToolStripMenuItem.Name = "설정ToolStripMenuItem";
+            this.설정ToolStripMenuItem.Size = new System.Drawing.Size(43, 24);
+            this.설정ToolStripMenuItem.Text = "설정";
+            // 
+            // 경로초기화ToolStripMenuItem
+            // 
+            this.경로초기화ToolStripMenuItem.Name = "경로초기화ToolStripMenuItem";
+            this.경로초기화ToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.경로초기화ToolStripMenuItem.Text = "경로 초기화";
             // 
             // Title
             // 
             this.Title.AutoSize = true;
-            this.Title.Font = new System.Drawing.Font("나눔고딕 ExtraBold", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Title.Location = new System.Drawing.Point(319, 48);
             this.Title.Name = "Title";
-            this.Title.Size = new System.Drawing.Size(159, 55);
+            this.Title.Size = new System.Drawing.Size(141, 55);
             this.Title.TabIndex = 14;
             this.Title.Text = "견적서";
             // 
@@ -764,7 +781,7 @@
             this.toolStrip1.BackColor = System.Drawing.SystemColors.Window;
             this.toolStrip1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.toolStrip1.ContextMenuStrip = this.contextMenuStrip1;
-            this.toolStrip1.Font = new System.Drawing.Font("맑은 고딕", 10F);
+            this.toolStrip1.Font = new System.Drawing.Font("Malgun Gothic", 10F);
             this.toolStrip1.GripMargin = new System.Windows.Forms.Padding(0);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newDocBtn,
@@ -815,7 +832,7 @@
             this.테이블폰트ToolStripMenuItem,
             this.출력폰트ToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(180, 24);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(139, 24);
             this.toolStripMenuItem1.Text = "폰트 설정";
             // 
             // systemFont
@@ -846,20 +863,6 @@
             this.출력폰트ToolStripMenuItem.Name = "출력폰트ToolStripMenuItem";
             this.출력폰트ToolStripMenuItem.Size = new System.Drawing.Size(153, 24);
             this.출력폰트ToolStripMenuItem.Text = "출력 폰트";
-            // 
-            // 설정ToolStripMenuItem
-            // 
-            this.설정ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.경로초기화ToolStripMenuItem});
-            this.설정ToolStripMenuItem.Name = "설정ToolStripMenuItem";
-            this.설정ToolStripMenuItem.Size = new System.Drawing.Size(43, 24);
-            this.설정ToolStripMenuItem.Text = "설정";
-            // 
-            // 경로초기화ToolStripMenuItem
-            // 
-            this.경로초기화ToolStripMenuItem.Name = "경로초기화ToolStripMenuItem";
-            this.경로초기화ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.경로초기화ToolStripMenuItem.Text = "경로 초기화";
             // 
             // DocForm
             // 

@@ -312,7 +312,7 @@
       <Version>4.7.2</Version>
     </PackageReference>
     <PackageReference Include="unvell.ReoGrid.dll">
-      <Version>2.1.0</Version>
+      <Version>3.0.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

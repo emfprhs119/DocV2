@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using System.Windows;
 
 namespace DocV2
 {
@@ -11,7 +12,7 @@ namespace DocV2
     {
         protected ExportPDF exportPDF;
         public int maxPage;
-        public enum TableType { LT_ESTIMATE, RT_ESTIMATE, LT_SPECIFICATION, RT_SPECIFICATION, TABLE_ESTIMATE, TABLE_SPECIFICATION }
+        public enum TableType { LT_ESTIMATE, RT_ESTIMATE, BT_ESTIMATE, LT_SPECIFICATION, RT_SPECIFICATION, TABLE_ESTIMATE, TABLE_SPECIFICATION }
         public abstract PdfPTable GetHeader(Dictionary<string, string> kv, string sum);
         public abstract PdfPCell[] GetCellTableHeader();
         public abstract PdfPCell[] GetCellTableFooter(String[] sumValues);
@@ -48,11 +49,11 @@ namespace DocV2
             string pdfFontTTF = @"Font\malgun.ttf";
             objFont = BaseFont.CreateFont(pdfFontTTF, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             titleFont_forSpecification = new Font(objFont, 6, Font.NORMAL);
-            titleFont_forEstimate = new Font(objFont, 50, Font.NORMAL);
+            titleFont_forEstimate = new Font(objFont, 20, Font.NORMAL);
             //titleFont_forEstimate = new Font(ExportHeaderFont.BaseFont, ExportHeaderFont.Size / 9 * 50, ExportHeaderFont.Style);
-            itemFont_forEstimate = new Font(ExportTableFont.BaseFont, ExportTableFont.Size / 9 * 11, ExportTableFont.Style);
+            itemFont_forEstimate = new Font(ExportTableFont.BaseFont, ExportTableFont.Size/9*8f, ExportTableFont.Style);
             itemFont_forSpecification = new Font(ExportTableFont.BaseFont, ExportTableFont.Size / 9 * 11f, ExportTableFont.Style);
-            itemHeaderFont = new Font(ExportTableFont.BaseFont, ExportTableFont.Size / 9*10, ExportTableFont.Style);
+            itemHeaderFont = new Font(ExportTableFont.BaseFont, ExportTableFont.Size, ExportTableFont.Style);
         }
         public abstract void ExAdd(Document document, int page);
 
@@ -99,8 +100,18 @@ namespace DocV2
                             (i == 11 && widthSize > 140))
                             fontSize /= 2;
                         break;
+                    case TableType.LT_ESTIMATE:
+
+                        if (i == 8 || i == 9)
+                            fontSize = fontSize * 1.3f;
+                        break;
                     case TableType.RT_ESTIMATE:
                         if (i == 2 || i == 3 || i == 8 || i == 11)
+                            fontSize = fontSize * 1.5f;
+                        break;
+                    case TableType.BT_ESTIMATE:
+                        if (i == 0) fontSize = fontSize * 1.3f;
+                        else if (i != 1)
                             fontSize = fontSize * 1.5f;
                         break;
                 }
@@ -165,14 +176,14 @@ namespace DocV2
                         }
                         break;
                     case TableType.LT_ESTIMATE:
-                        if (i >= kvArr.Length - 1)
+                        /*if (i >= kvArr.Length - 1)
                         {
                             cell.Border = 15;
                             if (i == kvArr.Length - 2)
                                 cell.HorizontalAlignment = Element.ALIGN_CENTER;
                             if (i == kvArr.Length - 1)
                                 cell.BackgroundColor = sumColor;
-                        }
+                        }*/
                         break;
                     case TableType.RT_ESTIMATE:
                         switch (i)
@@ -194,6 +205,7 @@ namespace DocV2
                                 cell.Border = 15; break;
                         }
                         break;
+                    case TableType.BT_ESTIMATE: { }break;
                 }
 
                 table.AddCell(cell);
@@ -213,7 +225,7 @@ namespace DocV2
                 fixedHeight = 20f;
                 font = itemFont_forEstimate;
                 borderColor = Color.BLACK;
-                hAligns = new int[] { Element.ALIGN_LEFT, Element.ALIGN_LEFT, Element.ALIGN_RIGHT, Element.ALIGN_RIGHT, Element.ALIGN_CENTER, Element.ALIGN_RIGHT, Element.ALIGN_RIGHT, Element.ALIGN_LEFT };
+                hAligns = new int[] { Element.ALIGN_CENTER, Element.ALIGN_LEFT, Element.ALIGN_LEFT, Element.ALIGN_RIGHT, Element.ALIGN_RIGHT, Element.ALIGN_CENTER, Element.ALIGN_RIGHT, Element.ALIGN_RIGHT };
 
             }
             if (tableType == TableType.TABLE_SPECIFICATION)
@@ -273,7 +285,7 @@ namespace DocV2
                             }
                         }
                         
-                        Paragraph pa = new Paragraph(strArr[i][j], new Font(font.BaseFont,font.Size / 9 * fontSize));
+                        Paragraph pa = new Paragraph(strArr[i][j], new Font(font.BaseFont,font.Size / 9 * 8));
                         cell = new PdfPCell(pa);
                     }
                     else
@@ -284,8 +296,9 @@ namespace DocV2
                     cell.FixedHeight = fixedHeight;
                     cell.BorderColor = borderColor;
                     cell.BorderWidth = 1;
-                    cell.Padding = 0.3f;
+                    cell.Padding = 1.8f;
                     cell.PaddingTop = -3f;
+
                     switch (cell.HorizontalAlignment)
                     {
                         case Element.ALIGN_CENTER:
@@ -298,7 +311,7 @@ namespace DocV2
                     }
                     //cell.PaddingTop = tPadding;
                     cell.NoWrap = false;
-                    if (j == 6 && tableType == TableType.TABLE_ESTIMATE)
+                    if (j == 7 && tableType == TableType.TABLE_ESTIMATE)
                         cell.BackgroundColor = sumColor;
                     if (i % 2 != 1 && tableType == TableType.TABLE_SPECIFICATION)
                     {
@@ -308,7 +321,7 @@ namespace DocV2
                     table.AddCell(cell);
                 }
             }
-            if (tableType == TableType.TABLE_ESTIMATE)
+            /*if (tableType == TableType.TABLE_ESTIMATE)
             {
                 cell = new PdfPCell
                 {
@@ -317,7 +330,7 @@ namespace DocV2
                     Border = 0
                 };
                 table.AddCell(cell);
-            }
+            }*/
             if (index+1 == maxPage)
             {
                 foreach (PdfPCell fCell in itemTableFooter)
@@ -339,6 +352,7 @@ namespace DocV2
             return table;
         }
 
+        internal abstract void FixTable(string[][] table, float[] widths);
     }
     public class ExportPDF
     {
@@ -381,10 +395,13 @@ namespace DocV2
             // 기본정보
             var k = exportParts.GetHeader(headerDatas, sum);
             document.Add(k);
+            // table numbering 견적서
+            exportParts.FixTable(table, widths);
             // 테이블
             for (int i = 0;i< exportParts.maxPage; i++)
             {
                 exportParts.ExAdd(document,i);
+
                 var tables = exportParts.GetTableItem(widths, exportParts.GetCellTableHeader(), exportParts.GetCellTableFooter(sumValues), table, i, exportParts.GetTableType());
                 document.Add(tables);
             }
