@@ -220,8 +220,9 @@ namespace DocV2
             this.t2.FormattingEnabled = true;
             this.t2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.t2.IntegralHeight = false;
+            this.t2.ItemHeight = 21;
             this.t2.Location = new System.Drawing.Point(116, 80);
-            this.t2.MaxDropDownItems = 5;
+            this.t2.MaxDropDownItems = 35;
             this.t2.Name = "t2";
             this.t2.Size = new System.Drawing.Size(222, 29);
             this.t2.Sorted = true;

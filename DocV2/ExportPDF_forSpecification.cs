@@ -158,13 +158,14 @@ namespace DocV2
                         text = sumValues[7];
                         break;
                 }
-                footerCell[i] = new PdfPCell(new Paragraph(text, itemFont_forSpecification));
-                
-                footerCell[i].HorizontalAlignment = alignment;
-                footerCell[i].VerticalAlignment = Element.ALIGN_MIDDLE;
-                footerCell[i].Colspan = colspan;
-                footerCell[i].FixedHeight = 16f;
-                footerCell[i].Border = 0;
+                footerCell[i] = new PdfPCell(new Paragraph(text, itemFont_forSpecification))
+                {
+                    HorizontalAlignment = alignment,
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    Colspan = colspan,
+                    FixedHeight = 16f,
+                    Border = 0
+                };
 
             }
 

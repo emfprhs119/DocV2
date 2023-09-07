@@ -11,19 +11,19 @@
 			"Width":45,
 			"Align":"Mid"
 		},
-    {
-      "Name": "품목코드",
-      "Width": 80,
-      "Align": "Left"
-    },
+		{
+		  "Name": "품목코드",
+		  "Width": 0,
+		  "Align": "Left"
+		},
 		{
 			"Name":"품목",
-			"Width":140,
+			"Width":180,
 			"Align":"Left"
 		},
 		{
 			"Name":"규격",
-			"Width":80,
+			"Width":120,
 			"Align":"Left"
 		},
 		{

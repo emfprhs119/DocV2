@@ -3,7 +3,6 @@ using System.Data;
 using System.Data.SQLite;
 using System.Diagnostics;
 using System.IO;
-using System.Windows.Forms;
 /*
 // doc
 string sql = "create table doc (docID integer primary key AUTOINCREMENT,columnWidths TEXT,";*/

@@ -3,8 +3,6 @@ using iTextSharp.text.pdf;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
-using System.Windows;
 
 namespace DocV2
 {
@@ -30,16 +28,6 @@ namespace DocV2
         
         public IExportParts()
         {
-            /*
-            string pdfFontTTF = @"Font\malgun.ttf";
-            objFont = BaseFont.CreateFont(pdfFontTTF, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-            itemFont_forEstimate = new Font(objFont, 11);
-            itemFont_forSpecification = new Font(objFont, 11f);
-            itemHeaderFont = new Font(objFont, 10, Font.NORMAL);
-            titleFont_forSpecification = new Font(objFont, 6);
-            headerFont = new Font(objFont, 16, Font.BOLD);
-            titleFont_forEstimate = new Font(objFont, 50, Font.BOLD);
-            */
         }
         
         internal void SetFont(Font ExportHeaderFont, Font ExportTableFont)
@@ -52,7 +40,7 @@ namespace DocV2
             titleFont_forEstimate = new Font(objFont, 20, Font.NORMAL);
             //titleFont_forEstimate = new Font(ExportHeaderFont.BaseFont, ExportHeaderFont.Size / 9 * 50, ExportHeaderFont.Style);
             itemFont_forEstimate = new Font(ExportTableFont.BaseFont, ExportTableFont.Size/9*8f, ExportTableFont.Style);
-            itemFont_forSpecification = new Font(ExportTableFont.BaseFont, ExportTableFont.Size / 9 * 11f, ExportTableFont.Style);
+            itemFont_forSpecification = new Font(ExportTableFont.BaseFont, ExportTableFont.Size, ExportTableFont.Style);
             itemHeaderFont = new Font(ExportTableFont.BaseFont, ExportTableFont.Size, ExportTableFont.Style);
         }
         public abstract void ExAdd(Document document, int page);
@@ -155,7 +143,6 @@ namespace DocV2
                         {
                             cell.FixedHeight = fixedHeightStd + 7.5f;
                         }
-                        //cell.Border = 15;
                         break;
                     case TableType.RT_SPECIFICATION:
                         cell.PaddingTop = 1f;
@@ -176,14 +163,6 @@ namespace DocV2
                         }
                         break;
                     case TableType.LT_ESTIMATE:
-                        /*if (i >= kvArr.Length - 1)
-                        {
-                            cell.Border = 15;
-                            if (i == kvArr.Length - 2)
-                                cell.HorizontalAlignment = Element.ALIGN_CENTER;
-                            if (i == kvArr.Length - 1)
-                                cell.BackgroundColor = sumColor;
-                        }*/
                         break;
                     case TableType.RT_ESTIMATE:
                         switch (i)
@@ -233,8 +212,10 @@ namespace DocV2
                 fixedHeight = 13.61f;
                 font = itemFont_forSpecification;
                 borderColor = specificationBorderColor;
-                widths = new float[] { 34.7f, 92.8f, 172, 74, 46.5f, 71, 97, 79 };
+                widths = new float[] { 34.5f, 0f, 221f, 118, 46.5f, 71, 97, 79 };
                 hAligns = new int[] { Element.ALIGN_CENTER, Element.ALIGN_LEFT, Element.ALIGN_LEFT, Element.ALIGN_LEFT, Element.ALIGN_CENTER, Element.ALIGN_RIGHT, Element.ALIGN_RIGHT, Element.ALIGN_RIGHT };
+                //widths = new float[] { 34.7f, 92.8f, 172, 74, 46.5f, 71, 97, 79 };
+                //hAligns = new int[] { Element.ALIGN_CENTER, Element.ALIGN_LEFT, Element.ALIGN_LEFT, Element.ALIGN_LEFT, Element.ALIGN_CENTER, Element.ALIGN_RIGHT, Element.ALIGN_RIGHT, Element.ALIGN_RIGHT };
             }
             PdfPTable table = new PdfPTable(8);
             table.WidthPercentage = 100f;
@@ -321,16 +302,6 @@ namespace DocV2
                     table.AddCell(cell);
                 }
             }
-            /*if (tableType == TableType.TABLE_ESTIMATE)
-            {
-                cell = new PdfPCell
-                {
-                    Colspan = widths.Length,
-                    FixedHeight = 1,
-                    Border = 0
-                };
-                table.AddCell(cell);
-            }*/
             if (index+1 == maxPage)
             {
                 foreach (PdfPCell fCell in itemTableFooter)

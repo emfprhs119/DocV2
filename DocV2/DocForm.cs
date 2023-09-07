@@ -3,7 +3,6 @@ using PdfiumViewer;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.IO;
@@ -240,9 +239,9 @@ namespace DocV2
             if (!SaveQuestion())
                 return;
             string loadData = SQLiteWrapper.LoadDoc(key);
-            //Console.WriteLine(loadData);
+            
             string[] sn = loadData.Split(new string[]{ ",SplitText"}, StringSplitOptions.None);
-
+            
             sheetControl.Clear();
             string[] sn0 = sn[0].Split(',');
             float[] columnWidths = sheetControl.GetColumnWidths();
@@ -258,10 +257,6 @@ namespace DocV2
             docID = key;
             this.Text = docID;
             sheetControl.isModified = false;
-            /*loadDocView.Hide();
-            this.BringToFront();
-            this.Activate();
-            this.Show();*/
         }
 
         private void ExtractOrder()
