@@ -116,9 +116,9 @@ namespace DocV2
             }
             CompanyDropDownRefresh();
         }
-        private void CompanyDropDownRefresh()
+        public void CompanyDropDownRefresh()
         {
-            DataTable table = SQLiteWrapper.GetDataTable("select DISTINCT info_2 from doc order by info_2");
+            DataTable table = SQLiteWrapper.GetDataTable("select DISTINCT info_2 from doc where docID LIKE '" + formName + "%' order by info_2");
             t2.Items.Clear();
             foreach (DataRow dataRow in table.Rows)
                 t2.Items.Add(dataRow[0]);
@@ -249,6 +249,10 @@ namespace DocV2
             while (i < columnWidths.Length) {
                 columnWidths[i] = float.Parse(sn0[i]);
                 i++;
+            }
+            if (formName == "거래명세서")
+            {
+                columnWidths[1] = 0;
             }
             var segment = new ArraySegment<string>(sn0, i, sn0.Length-i);
             LoadOrderData(segment.ToArray());

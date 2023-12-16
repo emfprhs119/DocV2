@@ -12,9 +12,9 @@
 			"Align":"Mid"
 		},
 		{
-		  "Name": "품목코드",
-		  "Width": 0,
-		  "Align": "Left"
+			"Name": "품목코드",
+			"Width": 0,
+			"Align": "Left"
 		},
 		{
 			"Name":"품목",
@@ -49,12 +49,12 @@
 			"LastSum":true
 		},
 		{
-			"Name":"세액",
-			"Format":"Currency",
-			"Calc":"='공급가액'*0.1",
-			"ReadOnly":true,
-			"Align":"Right",
-			"LastSum":true
+			"Name": "세액",
+			"Format": "Currency",
+			"Calc": "='공급가액'*0.1",
+			"ReadOnly": true,
+			"Align": "Right",
+			"LastSum": true
 		}
 	]
 }

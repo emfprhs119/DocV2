@@ -28,7 +28,7 @@ namespace DocV2
                 case ViewType.DOC:
                     Width = 390;
                     Height = 600;
-                    sheetControl.SetSelectionMode(unvell.ReoGrid.WorksheetSelectionMode.SingleRow);
+                    sheetControl.SetSelectionMode(unvell.ReoGrid.WorksheetSelectionMode.Cell);
                     reoGrid.DoubleClick += button1_Click;
                     break;
                 case ViewType.ITEM:
@@ -102,6 +102,7 @@ namespace DocV2
             }
             sheetControl.SheetFontChange();
             sheetControl.EnableFilter();
+            docForm.CompanyDropDownRefresh();
         }
         internal void SetRefSheet(SheetControl sheetControl)
         {
@@ -121,8 +122,10 @@ namespace DocV2
         private void button2_Click(object sender, EventArgs e)
         {
             SQLiteWrapper.DeleteDoc(GetId());
-            searchBox.Text = "";
-            RefreshData();
+            sheetControl.DeleteSelectionRowLine();
+
+            //searchBox.Text = "";
+            //RefreshData();
         }
         private string GetId()
         {

@@ -59,6 +59,8 @@ namespace DocV2
                 }
             }else
                 columnWidths = widths;
+
+
             ResetSheetWidth(null);
         }
         public string GetSelectionRowLine()
@@ -67,6 +69,11 @@ namespace DocV2
             for (int i = 1; i < sheet.ColumnCount; i++)
                 str += "_"+sheet.GetCell(sheet.SelectionRange.Row, i).DisplayText;
             return str;
+        }
+
+        public void DeleteSelectionRowLine()
+        {
+            sheet.DeleteRows(sheet.SelectionRange.Row, 1);
         }
         public void SetSelectionMode(WorksheetSelectionMode mode)
         {
@@ -490,6 +497,13 @@ namespace DocV2
 
             for (int i = 0;i<zoom;i++)
                 sheet.ZoomIn();
+
+            if (this.docForm != null && this.docForm.formName == "거래명세서")
+            {
+                string[] stn = DateTime.Today.ToShortDateString().Split('-');
+                string todayStr = stn[1] + "." + stn[2];
+                sheet.Cells[0, 0].Data = todayStr;
+            }
         }
 
         public void Select_Single()
@@ -588,6 +602,12 @@ namespace DocV2
         public void Clear()
         {
             sheet.ClearRangeContent(sheet.UsedRange, CellElementFlag.Data, false);
+            if (this.docForm != null && this.docForm.formName == "거래명세서")
+            {
+                string[] stn = DateTime.Today.ToShortDateString().Split('-');
+                string todayStr = stn[1] + "." + stn[2];
+                sheet.Cells[0, 0].Data = todayStr;
+            }
         }
         public void Space()
         {
@@ -659,11 +679,14 @@ namespace DocV2
         
         private void ResetSheetWidth(string str)
         {
+
             if (str != null)
                 PrintSheetError(str);
             isResetColumnWidth = true;
             for (int i = 0; i < sheet.Columns - 1; i++)
+            {
                 sheet.ColumnHeaders[i].Width = (ushort)columnWidths[i];
+            }
             isResetColumnWidth = false;
             sheet.ColumnHeaders[0].Width = (ushort)columnWidths[0];
         }
