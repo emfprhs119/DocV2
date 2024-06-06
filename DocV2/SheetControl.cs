@@ -24,6 +24,8 @@ namespace DocV2
         Graphics g;
         readonly Color sumColor = System.Drawing.Color.LightYellow;
         Label totalLabel;
+        Label sumLabel;
+        Label taxSumLabel;
         HashSet<CellConfig> restoreSet;
         public bool isModified;
         DocForm docForm;
@@ -88,13 +90,13 @@ namespace DocV2
 
         public string TotalString()
         {
-            float sumValue = 0;
+            double sumValue = 0;
             for (int i = 0; i < sheet.Columns; i++)
             {
                 if (sheet.GetCellData(sheet.Rows - 1, i) != null)
                 {
-                    float tmp;
-                    if (float.TryParse(sheet.GetCellData((sheet.Rows - 1), i).ToString(), out tmp))
+                    double tmp;
+                    if (double.TryParse(sheet.GetCellData((sheet.Rows - 1), i).ToString(), out tmp))
                     {
                         sumValue += tmp;
                     }
@@ -106,17 +108,32 @@ namespace DocV2
             }
             return string.Format("{0:c}", sumValue).Replace("₩","");
         }
+        public double SumColValue(int reverseCol)
+        {
+            double sumValue = 0;
+            if (sheet.GetCellData((sheet.Rows - 1), sheet.Columns+ reverseCol) != null)
+                double.TryParse(sheet.GetCellData((sheet.Rows - 1), sheet.Columns + reverseCol).ToString(), out sumValue);
+            return sumValue;
+        }
 
         private void RefreshTotalLabel()
         {
             totalLabel.Text = TotalString() + "원";
+            sumLabel.Text = string.Format("{0:c}", SumColValue(-2)).Replace("₩", "");
+
+            if (docForm.formName == "견적서"){
+                taxSumLabel.Visible = false;
+            }
+            taxSumLabel.Text = string.Format("{0:c}", SumColValue(-1)).Replace("₩", "");
         }
 
-        public SheetControl(DocForm docForm, unvell.ReoGrid.ReoGridControl reoGrid, Label label23, Graphics g,int zoom,bool useFunc)
+        public SheetControl(DocForm docForm, unvell.ReoGrid.ReoGridControl reoGrid, Label label23, Label sumLabel, Label taxSumLabel, Graphics g,int zoom,bool useFunc)
         {
             this.docForm = docForm;
             this.reoGrid = reoGrid;
-            totalLabel = label23;
+            this.totalLabel = label23;
+            this.sumLabel = sumLabel;
+            this.taxSumLabel = taxSumLabel;
             this.g = g;
             isModified = true;
             this.zoom = zoom;
@@ -668,7 +685,7 @@ namespace DocV2
                     return;
                 }*/
                 
-                sheet.ColumnHeaders[sheet.Columns - 1].Width = (ushort)(width - width_sum-8);
+                sheet.ColumnHeaders[sheet.Columns - 1].Width = (ushort)(width - width_sum-3);
                 columnWidths[columnWidths.Length-1] = (ushort)(width - width_sum);
                 if (Math.Abs(e.Width - columnWidths[e.Index]) > 1)
                 {

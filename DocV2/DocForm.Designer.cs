@@ -80,6 +80,9 @@ namespace DocV2
             this.menu_Copy = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_Paste = new System.Windows.Forms.ToolStripMenuItem();
             this.reoGridPanel = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.taxSumLabel = new System.Windows.Forms.Label();
+            this.sumLabel = new System.Windows.Forms.Label();
             this.시스템폰트변경ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.테이블폰트변경ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ConfigBtn = new System.Windows.Forms.ToolStripSplitButton();
@@ -641,6 +644,9 @@ namespace DocV2
             // reoGridPanel
             // 
             this.reoGridPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.reoGridPanel.Controls.Add(this.panel1);
+            this.reoGridPanel.Controls.Add(this.taxSumLabel);
+            this.reoGridPanel.Controls.Add(this.sumLabel);
             this.reoGridPanel.Controls.Add(this.reoGrid);
             this.reoGridPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.reoGridPanel.Location = new System.Drawing.Point(0, 322);
@@ -648,6 +654,41 @@ namespace DocV2
             this.reoGridPanel.Name = "reoGridPanel";
             this.reoGridPanel.Size = new System.Drawing.Size(874, 117);
             this.reoGridPanel.TabIndex = 8;
+            // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Location = new System.Drawing.Point(1, 88);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(532, 28);
+            this.panel1.TabIndex = 15;
+            // 
+            // taxSumLabel
+            // 
+            this.taxSumLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.taxSumLabel.BackColor = System.Drawing.SystemColors.Window;
+            this.taxSumLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.taxSumLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.taxSumLabel.Location = new System.Drawing.Point(726, 86);
+            this.taxSumLabel.Name = "taxSumLabel";
+            this.taxSumLabel.Size = new System.Drawing.Size(129, 30);
+            this.taxSumLabel.TabIndex = 16;
+            this.taxSumLabel.Text = "9,999,999";
+            this.taxSumLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // sumLabel
+            // 
+            this.sumLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.sumLabel.BackColor = System.Drawing.SystemColors.Info;
+            this.sumLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.sumLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sumLabel.Location = new System.Drawing.Point(534, 86);
+            this.sumLabel.Name = "sumLabel";
+            this.sumLabel.Size = new System.Drawing.Size(193, 30);
+            this.sumLabel.TabIndex = 15;
+            this.sumLabel.Text = "99,999,999";
+            this.sumLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // 시스템폰트변경ToolStripMenuItem
             // 
@@ -978,6 +1019,9 @@ namespace DocV2
         private System.Windows.Forms.ToolStripMenuItem 출력폰트ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 설정ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 경로초기화ToolStripMenuItem;
+        private System.Windows.Forms.Label sumLabel;
+        private System.Windows.Forms.Label taxSumLabel;
+        private System.Windows.Forms.Panel panel1;
     }
 }
 

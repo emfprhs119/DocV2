@@ -36,7 +36,7 @@ namespace DocV2
                 configFileName = @"resources\estimate.json";
             else if (arg == "거래명세서")
                 configFileName = @"resources\specification.json";
-            sheetControl = new SheetControl(this,reoGrid, label23, this.CreateGraphics(),7,true);
+            sheetControl = new SheetControl(this,reoGrid, label23, sumLabel, taxSumLabel, this.CreateGraphics(),7,true);
             sheetControl.AttachMenu(new ToolStripMenuItem[] { menu_RowAdd,menu_RowDelete,menu_DataRemove,menu_Cut,menu_Copy,menu_Paste});
             headerInfo = new Dictionary<string, string>();
             exportPDF = new ExportPDF(this.CreateGraphics(),arg);

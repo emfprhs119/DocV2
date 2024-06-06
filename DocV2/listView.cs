@@ -17,7 +17,7 @@ namespace DocV2
         {
             InitializeComponent();
             formWidth = Width;
-            sheetControl = new SheetControl(null,reoGrid, null, this.CreateGraphics(),1,false);
+            sheetControl = new SheetControl(null,reoGrid, null, null, null, this.CreateGraphics(),1,false);
             KeyPreview = true;
             KeyDown += (object sender, KeyEventArgs e)=> { if (e.KeyCode == Keys.F5) RefreshData(); };
             this.docForm = docForm;
