@@ -17,6 +17,5 @@ namespace DocV2
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new DocForm(args[0]));
         }
-        
     }
 }

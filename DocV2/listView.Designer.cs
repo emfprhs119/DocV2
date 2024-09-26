@@ -43,9 +43,10 @@
             // button1
             // 
             this.button1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.button1.Location = new System.Drawing.Point(435, 3);
+            this.button1.Location = new System.Drawing.Point(498, 4);
+            this.button1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(83, 29);
+            this.button1.Size = new System.Drawing.Size(95, 36);
             this.button1.TabIndex = 1;
             this.button1.Text = "불러오기";
             this.button1.UseVisualStyleBackColor = true;
@@ -54,9 +55,10 @@
             // button2
             // 
             this.button2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.button2.Location = new System.Drawing.Point(352, 3);
+            this.button2.Location = new System.Drawing.Point(403, 4);
+            this.button2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(83, 29);
+            this.button2.Size = new System.Drawing.Size(95, 36);
             this.button2.TabIndex = 2;
             this.button2.Text = "제거";
             this.button2.UseVisualStyleBackColor = true;
@@ -66,10 +68,11 @@
             // 
             this.searchBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.searchBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.searchBox.Font = new System.Drawing.Font("맑은 고딕", 12F);
+            this.searchBox.Font = new System.Drawing.Font("Malgun Gothic", 12F);
             this.searchBox.Location = new System.Drawing.Point(0, 0);
+            this.searchBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.searchBox.Name = "searchBox";
-            this.searchBox.Size = new System.Drawing.Size(518, 29);
+            this.searchBox.Size = new System.Drawing.Size(593, 34);
             this.searchBox.TabIndex = 3;
             this.searchBox.TextChanged += new System.EventHandler(this.searchBox_TextChanged);
             // 
@@ -77,10 +80,11 @@
             // 
             this.panel1.Controls.Add(this.searchBox);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(3, 3);
+            this.panel1.Location = new System.Drawing.Point(3, 4);
+            this.panel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.panel1.Name = "panel1";
-            this.panel1.Padding = new System.Windows.Forms.Padding(0, 0, 0, 3);
-            this.panel1.Size = new System.Drawing.Size(518, 32);
+            this.panel1.Padding = new System.Windows.Forms.Padding(0, 0, 0, 4);
+            this.panel1.Size = new System.Drawing.Size(593, 40);
             this.panel1.TabIndex = 5;
             // 
             // bottomPanel
@@ -88,10 +92,11 @@
             this.bottomPanel.Controls.Add(this.button2);
             this.bottomPanel.Controls.Add(this.button1);
             this.bottomPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.bottomPanel.Location = new System.Drawing.Point(3, 344);
+            this.bottomPanel.Location = new System.Drawing.Point(3, 430);
+            this.bottomPanel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.bottomPanel.Name = "bottomPanel";
-            this.bottomPanel.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.bottomPanel.Size = new System.Drawing.Size(518, 32);
+            this.bottomPanel.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            this.bottomPanel.Size = new System.Drawing.Size(593, 40);
             this.bottomPanel.TabIndex = 6;
             // 
             // panel3
@@ -99,9 +104,10 @@
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel3.Controls.Add(this.reoGrid);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(3, 35);
+            this.panel3.Location = new System.Drawing.Point(3, 44);
+            this.panel3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(518, 309);
+            this.panel3.Size = new System.Drawing.Size(593, 386);
             this.panel3.TabIndex = 7;
             // 
             // reoGrid
@@ -111,30 +117,32 @@
             this.reoGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.reoGrid.LeadHeaderContextMenuStrip = null;
             this.reoGrid.Location = new System.Drawing.Point(0, 0);
+            this.reoGrid.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.reoGrid.Name = "reoGrid";
             this.reoGrid.RowHeaderContextMenuStrip = null;
             this.reoGrid.Script = null;
             this.reoGrid.SheetTabContextMenuStrip = null;
             this.reoGrid.SheetTabNewButtonVisible = true;
             this.reoGrid.SheetTabVisible = true;
-            this.reoGrid.SheetTabWidth = 60;
+            this.reoGrid.SheetTabWidth = 69;
             this.reoGrid.ShowScrollEndSpacing = true;
-            this.reoGrid.Size = new System.Drawing.Size(516, 307);
+            this.reoGrid.Size = new System.Drawing.Size(591, 384);
             this.reoGrid.TabIndex = 1;
             this.reoGrid.Text = "reoGridControl1";
             // 
             // ListView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(524, 379);
+            this.ClientSize = new System.Drawing.Size(599, 474);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.bottomPanel);
             this.Controls.Add(this.panel1);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "ListView";
-            this.Padding = new System.Windows.Forms.Padding(3);
+            this.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ShowIcon = false;
             this.Text = "View";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LoadDoc_FormClosing);

@@ -120,10 +120,6 @@ namespace DocV2
         {
             totalLabel.Text = TotalString() + "원";
             sumLabel.Text = string.Format("{0:c}", SumColValue(-2)).Replace("₩", "");
-
-            if (docForm.formName == "견적서"){
-                taxSumLabel.Visible = false;
-            }
             taxSumLabel.Text = string.Format("{0:c}", SumColValue(-1)).Replace("₩", "");
         }
 

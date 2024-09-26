@@ -7,19 +7,19 @@ namespace DocV2
 {
     public partial class ListView : Form
     {
-        public enum ViewType { DOC,ITEM };
+        public enum ViewType { DOC, ITEM };
         DocForm docForm;
         ViewType viewType;
         SheetControl sheetControl;
         SheetControl refSheetControl;
         int formWidth;
-        public ListView(DocForm docForm,ViewType viewType)
+        public ListView(DocForm docForm, ViewType viewType)
         {
             InitializeComponent();
             formWidth = Width;
-            sheetControl = new SheetControl(null,reoGrid, null, null, null, this.CreateGraphics(),1,false);
+            sheetControl = new SheetControl(null, reoGrid, null, null, null, this.CreateGraphics(), 1, false);
             KeyPreview = true;
-            KeyDown += (object sender, KeyEventArgs e)=> { if (e.KeyCode == Keys.F5) RefreshData(); };
+            KeyDown += (object sender, KeyEventArgs e) => { if (e.KeyCode == Keys.F5) RefreshData(); };
             this.docForm = docForm;
             this.viewType = viewType;
 
@@ -60,18 +60,18 @@ namespace DocV2
                     query = "select info_1 as '날짜',info_2 as '상호',num as '번호' from doc where docID LIKE '" + docForm.formName + "%'";
                     query += " and (info_1 LIKE '%" + searchBox.Text + "%'";
                     query += " OR info_2 LIKE '%" + searchBox.Text + "%')";
-                    query+=" order by info_1 desc,info_2,num";
+                    query += " order by info_1 desc,info_2,num";
                     break;
                 case ViewType.ITEM:
                     query = "select doc.info_1 as '발행일자',doc.info_2 as '상호'";
-                    string []names = refSheetControl.GetColumnHeaderNames();
-                    for (int i=0; i<names.Length; i++)
+                    string[] names = refSheetControl.GetColumnHeaderNames();
+                    for (int i = 0; i < names.Length; i++)
                         query += ",column_" + i + " as '" + names[i] + "'";
                     query += " from doc,item where doc.docId=item.docId and doc.docID LIKE '" + docForm.formName + "%' and (";
                     query += " info_1 LIKE '%" + searchBox.Text + "%' or";
                     query += " info_2 LIKE '%" + searchBox.Text + "%'";
                     for (int i = 0; i < names.Length; i++)
-                        query += " or column_" + i+" LIKE '%" + searchBox.Text + "%'";
+                        query += " or column_" + i + " LIKE '%" + searchBox.Text + "%'";
                     query += ")";
                     break;
             }
@@ -151,9 +151,12 @@ namespace DocV2
 
         private void DocView_Resize(object sender, EventArgs e)
         {
-            var scale = (float)(this.Width) / formWidth;
-            sheetControl.FormResize(scale);
-            formWidth = this.Width;
+            if (sheetControl != null)
+            {
+                var scale = (float)(this.Width) / formWidth;
+                sheetControl.FormResize(scale);
+                formWidth = this.Width;
+            }
         }
     }
 }

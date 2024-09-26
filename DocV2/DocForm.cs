@@ -33,7 +33,12 @@ namespace DocV2
             //MinimumSize = new System.Drawing.Size(884, 600);
             formName = arg;
             if (arg == "견적서")
+            {
                 configFileName = @"resources\estimate.json";
+                panel1.Visible = false;
+                sumLabel.Visible = false;
+                taxSumLabel.Visible = false;
+            }
             else if (arg == "거래명세서")
                 configFileName = @"resources\specification.json";
             sheetControl = new SheetControl(this,reoGrid, label23, sumLabel, taxSumLabel, this.CreateGraphics(),7,true);
